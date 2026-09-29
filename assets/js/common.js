@@ -85,7 +85,7 @@ function estimateLeg(from, to, mode, departAt) {
   if (mode === "bus") minutes += 8; // bekatda kutish
   if (mode === "taxi") minutes += 4; // taksi chaqirish
   minutes = Math.max(3, minutes);
-  const cost = mode === "taxi" ? tr.base + road * tr.pricePerKm : tr.base;
+  const cost = mode === "taxi" ? Math.round((tr.base + road * tr.pricePerKm) / 1000) * 1000 : tr.base;
   return { km: road, minutes, factor, cost };
 }
 

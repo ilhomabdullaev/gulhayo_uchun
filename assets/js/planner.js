@@ -27,7 +27,7 @@ document.getElementById("pInterests").addEventListener("click", e => {
 /* ---------- Oflayn algoritm (AI kaliti bo'lmaganda) ---------- */
 function offlinePlan() {
   const want = pf.interests.length ? pf.interests : INTERESTS;
-  let pool = PLACES.filter(p => p.region === pf.region)
+  let pool = PLACES.filter(p => p.region === pf.region && p.type !== "food") // ovqat joylari — tushlik/kechki ovqatda
     .map(p => ({ p, s: p.rating + (want.includes(p.type) ? 1 : 0) }))
     .sort((a, b) => b.s - a.s).map(x => x.p);
   const budget = pf.budget * USD_RATE;
