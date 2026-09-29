@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tourist.uz — AI sayohat yordamchisi</title>
+  <meta name="description" content="O'zbekistonga tashrif buyuruvchi sayyohlar uchun AI marshrut, onlayn chipta va ko'p tilli ovozli gid.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🕌</text></svg>">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <header id="nav"></header>
+  <main>
+    <section class="hero">
+      <div class="container">
+        <span class="pill gold" data-i18n="badge.demo"></span>
+        <h1 data-i18n="hero.title"></h1>
+        <p class="lead" data-i18n="hero.sub"></p>
+        <div class="row">
+          <a class="btn" href="trip.html">🧭 <span data-i18n="hero.cta"></span></a>
+          <a class="btn ghost" href="planner.html">✨ <span data-i18n="hero.cta2"></span></a>
+        </div>
+        <div class="stats">
+          <div><b id="stPlaces">0</b><span class="muted" data-i18n="stats.places"></span></div>
+          <div><b id="stRegions">0</b><span class="muted" data-i18n="stats.regions"></span></div>
+          <div><b id="stLangs">0</b><span class="muted" data-i18n="stats.langs"></span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container grid c4">
+        <a class="card feature" href="trip.html" style="text-decoration:none;color:inherit"><div class="ic">🤖</div><h3 data-i18n="feat.1.t"></h3><p class="muted" data-i18n="feat.1.d"></p></a>
+        <a class="card feature" href="cart.html" style="text-decoration:none;color:inherit"><div class="ic">🎟️</div><h3 data-i18n="feat.2.t"></h3><p class="muted" data-i18n="feat.2.d"></p></a>
+        <a class="card feature" href="trip.html" style="text-decoration:none;color:inherit"><div class="ic">🚕</div><h3 data-i18n="feat.3.t"></h3><p class="muted" data-i18n="feat.3.d"></p></a>
+        <a class="card feature" href="guide.html" style="text-decoration:none;color:inherit"><div class="ic">🎧</div><h3 data-i18n="feat.4.t"></h3><p class="muted" data-i18n="feat.4.d"></p></a>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:0">
+      <div class="container">
+        <h2 data-i18n="how.t"></h2>
+        <ol class="steps">
+          <li data-i18n="how.1"></li><li data-i18n="how.2"></li><li data-i18n="how.3"></li>
+          <li data-i18n="how.4"></li><li data-i18n="how.5"></li><li data-i18n="how.6"></li>
+        </ol>
+      </div>
+    </section>
+  </main>
+  <footer id="foot"></footer>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/common.js"></script>
+  <script>
+    renderNav("home");
+    document.getElementById("stPlaces").textContent = PLACES.length;
+    document.getElementById("stRegions").textContent = REGIONS.length;
+    document.getElementById("stLangs").textContent = Object.keys(GUIDE_LANGS).length;
+  </script>
+</body>
+</html>

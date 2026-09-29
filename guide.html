@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Audio-gid — Tourist.uz</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎧</text></svg>">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <header id="nav"></header>
+  <main class="container">
+    <div class="page-head">
+      <h1>🎧 <span data-i18n="guide.t"></span></h1>
+      <p class="muted" data-i18n="guide.sub"></p>
+    </div>
+
+    <div class="grid c2" style="align-items:start">
+      <div class="card">
+        <div class="grid c2">
+          <div class="field"><label for="gLang" data-i18n="guide.lang"></label><select id="gLang"></select></div>
+          <div class="field"><label for="gSim" data-i18n="guide.pick"></label><select id="gSim"></select></div>
+        </div>
+        <label class="small" style="font-weight:500;display:flex;gap:8px;align-items:center;margin-bottom:14px">
+          <input type="checkbox" id="gAiVoice" style="width:auto"> Gemini TTS (AI ovoz / AI voice)
+        </label>
+        <div class="row">
+          <button class="btn accent" id="gGps">📡 <span data-i18n="guide.startGps"></span></button>
+          <button class="btn ghost" id="gSimBtn">📍 <span data-i18n="guide.simulate"></span></button>
+        </div>
+        <p id="gStatus" class="small muted" style="margin-top:12px"></p>
+        <div class="radar" id="radar" style="margin-top:12px"><div class="me"></div></div>
+      </div>
+
+      <div>
+        <div class="card hidden" id="gNow" style="margin-bottom:16px">
+          <span class="pill accent pulse" data-i18n="guide.inRange"></span>
+          <h2 id="gTitle" style="margin-top:10px"></h2>
+          <div class="row" style="margin-bottom:12px">
+            <button class="btn" id="gPlay">▶️ <span data-i18n="guide.listen"></span></button>
+            <button class="btn ghost" id="gStopBtn">⏹ <span data-i18n="guide.stop"></span></button>
+            <span id="gSrc" class="small muted"></span>
+          </div>
+          <div class="guide-text" id="gText"></div>
+        </div>
+        <div class="card near-list">
+          <h3 data-i18n="guide.nearest"></h3>
+          <div id="gNear"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer id="foot"></footer>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/common.js"></script>
+  <script src="assets/js/guide.js"></script>
+</body>
+</html>

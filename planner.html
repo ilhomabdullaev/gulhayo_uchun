@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Planner — Tourist.uz</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✨</text></svg>">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <header id="nav"></header>
+  <main class="container">
+    <div class="page-head">
+      <h1>✨ <span data-i18n="plan.t"></span></h1>
+      <p class="muted" data-i18n="plan.sub"></p>
+    </div>
+
+    <form class="card" id="planForm">
+      <div class="grid c3">
+        <div class="field"><label for="pRegion" data-i18n="plan.region"></label><select id="pRegion"></select></div>
+        <div class="field"><label for="pDays" data-i18n="plan.days"></label><input id="pDays" type="number" min="1" max="7" value="3"></div>
+        <div class="field"><label for="pBudget" data-i18n="plan.budget"></label><input id="pBudget" type="number" min="20" step="10" value="200"></div>
+      </div>
+      <div class="field"><label data-i18n="plan.interests"></label><div class="chips" id="pInterests"></div></div>
+      <div class="field"><label for="pFree" data-i18n="plan.free"></label>
+        <textarea id="pFree" rows="2" data-i18n-ph="plan.freePh"></textarea></div>
+      <div class="row">
+        <button class="btn" type="submit" id="pGo">✨ <span data-i18n="plan.go"></span></button>
+        <span id="pStatus" class="small muted"></span>
+      </div>
+    </form>
+
+    <div id="result" style="margin-top:28px"></div>
+  </main>
+  <footer id="foot"></footer>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/common.js"></script>
+  <script src="assets/js/planner.js"></script>
+</body>
+</html>

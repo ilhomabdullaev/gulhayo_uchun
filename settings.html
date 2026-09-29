@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sozlamalar — Tourist.uz</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚙️</text></svg>">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <header id="nav"></header>
+  <main class="container" style="max-width:760px">
+    <div class="page-head"><h1>⚙️ <span data-i18n="set.t"></span></h1></div>
+
+    <form class="card" id="keyForm" autocomplete="off">
+      <h2>🤖 Google Gemini AI</h2>
+      <div class="field">
+        <label for="sKey" data-i18n="set.key"></label>
+        <div class="row" style="flex-wrap:nowrap">
+          <input id="sKey" type="password" data-i18n-ph="set.keyPh" spellcheck="false">
+          <button type="button" class="btn ghost sm" id="sShow" aria-label="show">👁</button>
+        </div>
+        <p class="small muted" data-i18n="set.keyNote"></p>
+        <p class="small"><a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener">aistudio.google.com/app/apikey ↗</a></p>
+      </div>
+      <div class="field">
+        <label for="sModel" data-i18n="set.model"></label>
+        <div class="row" style="flex-wrap:nowrap">
+          <input id="sModel" list="modelList" spellcheck="false">
+          <datalist id="modelList"></datalist>
+          <button type="button" class="btn ghost sm" id="sLoad" style="white-space:nowrap" data-i18n="set.loadModels"></button>
+        </div>
+      </div>
+      <div class="field">
+        <label for="sTts">TTS model (Gemini audio)</label>
+        <input id="sTts" spellcheck="false">
+      </div>
+      <div class="row">
+        <button class="btn" type="submit" data-i18n="set.save"></button>
+        <button class="btn accent" type="button" id="sTest" data-i18n="set.test"></button>
+        <button class="btn danger" type="button" id="sClear" data-i18n="set.clear"></button>
+      </div>
+      <p id="sStatus" class="small" style="margin-top:12px"></p>
+      <p class="notice small" data-i18n="set.security"></p>
+    </form>
+
+    <div class="card" style="margin-top:20px">
+      <h2>🌐 <span data-i18n="set.lang"></span></h2>
+      <div class="seg" id="sLang">
+        <button data-l="uz">O'zbekcha</button><button data-l="en">English</button><button data-l="ru">Русский</button>
+      </div>
+      <hr style="border:0;border-top:1px solid var(--border);margin:20px 0">
+      <button class="btn danger" id="sReset" data-i18n="set.reset"></button>
+    </div>
+  </main>
+  <footer id="foot"></footer>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/common.js"></script>
+  <script>
+    renderNav("settings");
+    const $ = id => document.getElementById(id);
+    const status = (msg, ok) => { $("sStatus").textContent = msg; $("sStatus").style.color = ok === undefined ? "" : ok ? "var(--ok)" : "var(--danger)"; };
+
+    function load() {
+      $("sKey").value = gemini.key();
+      $("sModel").value = gemini.model();
+      $("sTts").value = store.get("gemini.ttsModel", "gemini-2.5-flash-preview-tts");
+      document.querySelectorAll("#sLang button").forEach(b => b.classList.toggle("sel", b.dataset.l === getLang()));
+    }
+    function persist() {
+      store.set("gemini.key", $("sKey").value.trim());
+      store.set("gemini.model", $("sModel").value.trim() || DEFAULT_MODEL);
+      store.set("gemini.ttsModel", $("sTts").value.trim() || "gemini-2.5-flash-preview-tts");
+    }
+
+    $("sShow").onclick = () => { $("sKey").type = $("sKey").type === "password" ? "text" : "password"; };
+    $("keyForm").addEventListener("submit", e => { e.preventDefault(); persist(); status(t("set.saved"), true); renderNav("settings"); });
+    $("sClear").onclick = () => { store.remove("gemini.key"); $("sKey").value = ""; status(t("set.saved"), true); renderNav("settings"); };
+
+    $("sLoad").onclick = async () => {
+      const key = $("sKey").value.trim(); if (!key) { $("sKey").focus(); return; }
+      status(t("common.loading"));
+      try {
+        const models = await gemini.listModels(key);
+        $("modelList").innerHTML = models.map(m => `<option value="${esc(m.id)}">${esc(m.label)}</option>`).join("");
+        status(`✓ ${models.length} models: ${models.slice(0, 8).map(m => m.id).join(", ")}${models.length > 8 ? "…" : ""}`, true);
+      } catch (e) { status(`${t("set.testFail")} ${e.message}`, false); }
+    };
+
+    $("sTest").onclick = async () => {
+      persist();
+      if (!gemini.enabled()) { $("sKey").focus(); return; }
+      status(t("common.loading"));
+      try {
+        const txt = await gemini.generate("Reply with exactly: Salom, Tourist.uz!", { temperature: 0 });
+        status(`${t("set.testOk")} — ${gemini.model()}: «${txt.trim().slice(0, 80)}»`, true);
+        renderNav("settings");
+      } catch (e) { status(`${t("set.testFail")} ${e.message}`, false); }
+    };
+
+    $("sLang").addEventListener("click", e => { const b = e.target.closest("[data-l]"); if (b) { setLang(b.dataset.l); load(); } });
+    $("sReset").onclick = () => {
+      ["trip", "cart", "orders", "lastPlan", "plannerForm", "guideLang", "aiVoice"].forEach(k => store.remove(k));
+      try { Object.keys(localStorage).filter(k => k.startsWith("tu.narr.")).forEach(k => localStorage.removeItem(k)); } catch (e) { /* ignore */ }
+      updateCartBadge(); toast(t("set.resetDone"), "ok");
+    };
+    load();
+  </script>
+</body>
+</html>
