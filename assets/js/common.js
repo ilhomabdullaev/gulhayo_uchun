@@ -23,7 +23,10 @@ function getLang() {
   const nav = (navigator.language || "uz").slice(0, 2);
   return I18N[nav] ? nav : "uz";
 }
-function setLang(l) { store.set("lang", l); applyI18n(); document.dispatchEvent(new Event("langchange")); }
+function setLang(l) {
+  store.set("lang", l);
+  store.set("guideLang", l); // audio-gid ham interfeys tiliga ergashadi (gid sahifasida alohida o'zgartirish mumkin)
+  applyI18n(); document.dispatchEvent(new Event("langchange")); }
 function t(key) { const l = getLang(); return (I18N[l] && I18N[l][key]) || I18N.uz[key] || key; }
 function L(obj) { if (!obj) return ""; const l = getLang(); return obj[l] || obj.en || obj.uz || ""; }
 

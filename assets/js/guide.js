@@ -198,7 +198,11 @@ document.getElementById("gPlay").addEventListener("click", () => {
 document.getElementById("gStopBtn").addEventListener("click", stopSpeech);
 if ("speechSynthesis" in window) speechSynthesis.onvoiceschanged = () => {};
 
-document.addEventListener("langchange", () => { renderControls(); if (me) setPosition(me.lat, me.lon, true); });
+document.addEventListener("langchange", () => {
+  renderControls();
+  if (me) setPosition(me.lat, me.lon, true);
+  if (current) openPlace(current, false); // hikoyani yangi tilda qayta yuklash
+});
 renderControls();
 // Boshlang'ich holat: tanlangan hudud markazi
 const startReg = regionById(store.get("trip", {}).region) || REGIONS[0];

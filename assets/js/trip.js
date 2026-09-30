@@ -38,8 +38,8 @@ document.getElementById("countries").addEventListener("click", e => {
   const b = e.target.closest("[data-c]"); if (!b) return;
   const c = countryByCode(b.dataset.c);
   if (state.country !== c.code) { state.country = c.code; delete state.rank; }
-  store.set("guideLang", c.lang);
   if (!store.get("lang")) setLang(c.ui); // birinchi marta — interfeys tilini ham moslash
+  store.set("guideLang", c.lang);         // gid — sayyohning ona tilida (setLang'dan keyin)
   save(); go(2);
 });
 
