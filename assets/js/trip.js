@@ -189,6 +189,21 @@ function renderRoute() {
     <div class="card"><span class="muted small">${t("trip.tickets")}</span><b>${money(s.tickets)}</b><span class="small muted">${s.tickets ? usd(s.tickets) : ""}</span></div>
     <div class="card"><span class="muted small">${t("trip.transportCost")}</span><b>${money(s.transport)}</b></div>
     <div class="card"><span class="muted small">${t("trip.total")}</span><b>${money(s.tickets + s.transport)}</b><span class="small muted">${usd(s.tickets + s.transport)}</span></div>`;
+  drawRouteMap();
+}
+
+/* Marshrut xaritasi (OpenStreetMap): tartib raqamli belgilar va yo'nalish chizig'i */
+let routeMap = null, routeLayer = null;
+function drawRouteMap() {
+  if (!LF) return;
+  if (!routeMap) { routeMap = makeMap("routeMap", regionById(state.region).center, 14); routeLayer = LF.layerGroup().addTo(routeMap); }
+  routeMap.invalidateSize(); // yashirin qadamdan ko'ringanda o'lchamni yangilash
+  routeLayer.clearLayers();
+  const pts = state.selected.map(placeById);
+  pts.forEach((p, i) => LF.marker([p.lat, p.lon], { icon: pinIcon(String(i + 1), "route") })
+    .bindPopup(`<b>${i + 1}. ${esc(L(p.name))}</b>${money(p.price)}`).addTo(routeLayer));
+  if (pts.length > 1) LF.polyline(pts.map(p => [p.lat, p.lon]), { color: "#1b4f9c", weight: 4, opacity: .75, dashArray: "8 8" }).addTo(routeLayer);
+  if (pts.length) routeMap.fitBounds(LF.latLngBounds(pts.map(p => [p.lat, p.lon])).pad(0.25), { maxZoom: 16 });
 }
 
 document.getElementById("modes").addEventListener("click", e => {

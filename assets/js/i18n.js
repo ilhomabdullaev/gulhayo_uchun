@@ -48,7 +48,7 @@ const I18N = {
     "guide.listen": "Tinglash", "guide.stop": "To'xtatish", "guide.gen": "AI matn tayyorlamoqda…",
     "guide.gpsDenied": "GPS ruxsati berilmadi. Demo tugmasidan foydalaning.", "guide.gpsWait": "Joylashuv aniqlanmoqda…",
     "guide.you": "Siz shu yerdasiz", "guide.noVoice": "Brauzeringizda bu til uchun ovoz topilmadi — matn ko'rsatildi.",
-    "guide.pick": "Obidani tanlang",
+    "guide.pick": "Obidani tanlang", "guide.mapHint": "Demo: xaritaning istalgan joyini bossangiz, «joylashuvingiz» o'sha yerga ko'chadi. Obida belgisini bossangiz, hikoya ochiladi.",
 
     "cart.t": "Chiptalar savati", "cart.empty": "Savat bo'sh. Sayohat sahifasidan chipta qo'shing.",
     "cart.visitDate": "Tashrif sanasi", "cart.name": "Ism-familiya", "cart.email": "Email",
@@ -114,7 +114,7 @@ const I18N = {
     "guide.listen": "Listen", "guide.stop": "Stop", "guide.gen": "AI is preparing the text…",
     "guide.gpsDenied": "GPS permission denied. Use the demo button.", "guide.gpsWait": "Detecting location…",
     "guide.you": "You are here", "guide.noVoice": "No voice for this language in your browser — text shown instead.",
-    "guide.pick": "Choose a monument",
+    "guide.pick": "Choose a monument", "guide.mapHint": "Demo: tap anywhere on the map to move “your location” there. Tap a monument pin to open its story.",
 
     "cart.t": "Ticket cart", "cart.empty": "Your cart is empty. Add tickets from the Trip page.",
     "cart.visitDate": "Visit date", "cart.name": "Full name", "cart.email": "Email",
@@ -180,7 +180,7 @@ const I18N = {
     "guide.listen": "Слушать", "guide.stop": "Стоп", "guide.gen": "AI готовит текст…",
     "guide.gpsDenied": "Доступ к GPS запрещён. Используйте демо-кнопку.", "guide.gpsWait": "Определяем местоположение…",
     "guide.you": "Вы здесь", "guide.noVoice": "В браузере нет голоса для этого языка — показан текст.",
-    "guide.pick": "Выберите объект",
+    "guide.pick": "Выберите объект", "guide.mapHint": "Демо: нажмите в любом месте карты, чтобы переместить туда «ваше местоположение». Нажмите на метку объекта, чтобы открыть рассказ.",
 
     "cart.t": "Корзина билетов", "cart.empty": "Корзина пуста. Добавьте билеты на странице «Поездка».",
     "cart.visitDate": "Дата посещения", "cart.name": "Имя и фамилия", "cart.email": "Email",

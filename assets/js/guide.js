@@ -3,7 +3,6 @@
 renderNav("guide");
 
 const TRIGGER_M = 150;           // obidaga shu masofada gid avtomatik ishga tushadi
-const RADAR_KM = 2;              // radar radiusi
 let me = null, watchId = null, current = null, lastAuto = null, audioEl = null;
 
 const gLang = document.getElementById("gLang");
@@ -30,7 +29,7 @@ function setPosition(lat, lon, simulated) {
   me = { lat, lon };
   const near = PLACES.map(p => ({ p, d: haversineKm(lat, lon, p.lat, p.lon) })).sort((a, b) => a.d - b.d);
   renderNear(near.slice(0, 6));
-  renderRadar(near.filter(x => x.d <= RADAR_KM));
+  updateMap(lat, lon, simulated, near[0]);
   const top = near[0];
   document.getElementById("gStatus").textContent = simulated ? "📍 DEMO" : `📡 ${lat.toFixed(5)}, ${lon.toFixed(5)}`;
   if (top && top.d * 1000 <= TRIGGER_M && lastAuto !== top.p.id) {
@@ -49,19 +48,39 @@ document.getElementById("gNear").addEventListener("click", e => {
   const b = e.target.closest("[data-open]"); if (b) openPlace(placeById(b.dataset.open), true);
 });
 
-function renderRadar(list) {
-  const radar = document.getElementById("radar");
-  radar.querySelectorAll(".dot").forEach(d => d.remove());
-  list.forEach(({ p }) => {
-    const dx = haversineKm(me.lat, me.lon, me.lat, p.lon) * Math.sign(p.lon - me.lon);
-    const dy = haversineKm(me.lat, me.lon, p.lat, me.lon) * Math.sign(p.lat - me.lat);
-    const el = document.createElement("div");
-    el.className = "dot";
-    el.style.left = `${50 + (dx / RADAR_KM) * 48}%`;
-    el.style.top = `${50 - (dy / RADAR_KM) * 48}%`;
-    el.innerHTML = `<span>${esc(L(p.name))}</span>`;
-    radar.appendChild(el);
+/* ---------- Xarita ---------- */
+const gMap = makeMap("gMap", REGIONS[0].center, 15);
+const markers = {};
+let meMarker = null, meCircle = null, centeredOnce = false;
+if (gMap) {
+  PLACES.forEach(p => {
+    markers[p.id] = LF.marker([p.lat, p.lon], { icon: pinIcon("★") }).addTo(gMap)
+      .bindPopup(() => `<b>${esc(L(p.name))}</b><span class="small">${esc(L(p.desc))}</span><br><br>
+        <button class="btn sm" data-open="${p.id}">▶️ ${esc(t("guide.listen"))}</button>`);
   });
+  gMap.on("popupopen", e => {
+    const b = e.popup.getElement().querySelector("[data-open]");
+    if (b) b.onclick = () => { primeSpeech(); openPlace(placeById(b.dataset.open), true); gMap.closePopup(); };
+  });
+  // Demo: xaritani bosib "joylashuvni" o'zgartirish (haqiqiy GPS yoqilmaganda)
+  gMap.on("click", e => {
+    if (watchId !== null) return;
+    primeSpeech();
+    setPosition(e.latlng.lat, e.latlng.lng, true);
+  });
+}
+
+function updateMap(lat, lon, simulated, nearest) {
+  if (!gMap) return;
+  if (!meMarker) {
+    meMarker = LF.marker([lat, lon], { icon: meIcon(), zIndexOffset: 1000, interactive: false }).addTo(gMap);
+    meCircle = LF.circle([lat, lon], { radius: TRIGGER_M, color: "#129a9a", weight: 1, fillOpacity: 0.08, interactive: false }).addTo(gMap);
+  } else {
+    meMarker.setLatLng([lat, lon]); meCircle.setLatLng([lat, lon]);
+  }
+  Object.entries(markers).forEach(([id, m]) => m.setIcon(pinIcon("★", nearest && nearest.p.id === id ? "near" : "place")));
+  if (simulated || !centeredOnce) { gMap.setView([lat, lon], Math.max(gMap.getZoom(), 15)); centeredOnce = true; }
+  else if (!gMap.getBounds().contains([lat, lon])) gMap.panTo([lat, lon]);
 }
 
 document.getElementById("gGps").addEventListener("click", () => {

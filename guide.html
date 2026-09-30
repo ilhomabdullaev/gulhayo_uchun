@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Audio-gid — Tourist.uz</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎧</text></svg>">
+  <link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css">
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
@@ -29,7 +30,8 @@
           <button class="btn ghost" id="gSimBtn">📍 <span data-i18n="guide.simulate"></span></button>
         </div>
         <p id="gStatus" class="small muted" style="margin-top:12px"></p>
-        <div class="radar" id="radar" style="margin-top:12px"><div class="me"></div></div>
+        <div class="map tall" id="gMap" style="margin-top:12px"></div>
+        <p class="map-hint" data-i18n="guide.mapHint"></p>
       </div>
 
       <div>
@@ -55,6 +57,8 @@
   <script src="assets/js/data.js"></script>
   <script src="assets/js/i18n.js"></script>
   <script src="assets/js/common.js"></script>
+  <script src="assets/vendor/leaflet/leaflet.js"></script>
+  <script src="assets/js/map.js"></script>
   <script src="assets/js/narrations.js"></script>
   <script src="assets/js/guide.js"></script>
 </body>
