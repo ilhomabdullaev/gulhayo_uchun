@@ -156,19 +156,26 @@ function toast(msg, kind = "info") {
 
 /* ---------- Gemini AI ---------- */
 const DEFAULT_MODEL = "gemini-2.5-flash";
+const DEFAULT_TTS_MODEL = "gemini-2.5-flash-preview-tts";
+/* AI sozlamalari admin panelda kiritiladi (Firestore → config/ai) va barcha foydalanuvchilarga amal qiladi.
+   mode: "firebase" — Firebase AI Logic (kalit kerak emas, tavsiya etiladi); "key" — admin kiritgan Gemini API kaliti. */
 const gemini = {
-  key() { return store.get("gemini.key", ""); },
-  model() { return store.get("gemini.model", DEFAULT_MODEL) || DEFAULT_MODEL; },
-  /* AI ikki yo'l bilan ishlaydi: 1) Firebase AI Logic — kalit serverda, foydalanuvchi hech narsa kiritmaydi;
-     2) Sozlamalarda kiritilgan shaxsiy Gemini kaliti (kiritilgan bo'lsa, u ustun turadi). */
+  cfg() { return (typeof cloud !== "undefined" && cloud.aiConfig) || {}; },
+  key() { return this.cfg().mode === "key" ? (this.cfg().key || "") : ""; },
+  ttsKey() { return this.cfg().key || ""; }, // Gemini ovozi (TTS) kalit bo'lsa ikkala rejimda ham ishlaydi
+  model() { return this.cfg().model || DEFAULT_MODEL; },
+  ttsModel() { return this.cfg().ttsModel || DEFAULT_TTS_MODEL; },
   viaFirebase() { return !this.key() && typeof cloud !== "undefined" && cloud.enabled && !this._fbFailed; },
   enabled() { return !!this.key() || this.viaFirebase(); },
 
-  async generate(prompt, { json = false, system = "", temperature = 0.7 } = {}) {
-    const key = this.key();
-    if (!key && this.viaFirebase()) {
+  /* override: admin panelda saqlashdan oldin sinash uchun ({ mode, key, model }) */
+  async generate(prompt, { json = false, system = "", temperature = 0.7 } = {}, override = null) {
+    const mode = override ? override.mode : (this.key() ? "key" : "firebase");
+    const key = mode === "key" ? (override ? override.key : this.key()) : "";
+    const model = (override && override.model) || this.model();
+    if (mode === "firebase" && (override || this.viaFirebase())) {
       try {
-        const text = await cloud.generate(prompt, { json, system, temperature, model: this.model() });
+        const text = await cloud.generate(prompt, { json, system, temperature, model });
         return json ? parseJsonLoose(text) : text;
       } catch (e) {
         // AI Logic konsolda yoqilmagan bo'lsa — qayta-qayta urinmaslik uchun shu sahifada o'chiramiz
@@ -183,7 +190,7 @@ const gemini = {
     };
     if (system) body.systemInstruction = { parts: [{ text: system }] };
     const res = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(this.model())}:generateContent`,
+      `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`,
       { method: "POST", headers: { "Content-Type": "application/json", "x-goog-api-key": key }, body: JSON.stringify(body) }
     );
     const data = await res.json().catch(() => ({}));
@@ -193,7 +200,7 @@ const gemini = {
     return json ? parseJsonLoose(text) : text;
   },
 
-  async listModels(key = this.key()) {
+  async listModels(key = this.ttsKey()) {
     const res = await fetch("https://generativelanguage.googleapis.com/v1beta/models?pageSize=200", { headers: { "x-goog-api-key": key } });
     const data = await res.json().catch(() => ({}));
     if (!res.ok) throw new Error(data?.error?.message || `HTTP ${res.status}`);

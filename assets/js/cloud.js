@@ -10,7 +10,7 @@ const STATUS_LABELS = {
 function statusLabel(s) { return STATUS_LABELS[s] ? L(STATUS_LABELS[s]) : s; }
 
 const cloud = {
-  enabled: false, ready: false, user: null, admin: false, error: null,
+  enabled: false, ready: false, user: null, admin: false, error: null, aiConfig: {},
   _cbs: [], _app: null, _auth: null, _db: null,
 
   init() {
@@ -29,6 +29,7 @@ const cloud = {
     } catch (e) { this.error = e; console.error("Firebase init:", e); this._finish(null); return; }
 
     this.loadPlaceOverrides();
+    this.loadAiConfig();
     FB.getRedirectResult(this._auth).catch(e => toast(authError(e), "error"));
     FB.onAuthStateChanged(this._auth, async u => {
       this.user = u ? { uid: u.uid, email: u.email || "", name: u.displayName || (u.email || "").split("@")[0] } : null;
@@ -106,6 +107,20 @@ const cloud = {
     });
     const res = await m.generateContent(prompt);
     return res.response.text();
+  },
+
+  /* ---------- AI sozlamalari (admin kiritadi, hamma uchun amal qiladi) ---------- */
+  async loadAiConfig() {
+    try {
+      const d = await FB.getDoc(FB.doc(this._db, "config", "ai"));
+      this.aiConfig = d.exists() ? d.data() : {};
+    } catch (e) { console.warn("ai config:", e.message); }
+    document.dispatchEvent(new Event("aiconfig"));
+  },
+  async saveAiConfig(data) {
+    await FB.setDoc(FB.doc(this._db, "config", "ai"), { ...data, updatedAt: FB.serverTimestamp() });
+    this.aiConfig = data;
+    document.dispatchEvent(new Event("aiconfig"));
   },
 
   /* ---------- Buyurtmalar ---------- */

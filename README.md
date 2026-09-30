@@ -31,8 +31,10 @@ Uni bir marta yoqish kerak:
 2. **Gemini Developer API** ni tanlang, u bepul tarifda ham ishlaydi, va **Enable API** tugmasini bosing.
 3. Tayyor. Saytdagi menyuda `AI` belgisi yashil bo'ladi. **Sozlamalar → Ulanishni tekshirish** tugmasi bilan tekshirib ko'rish mumkin.
 
-Ixtiyoriy: Sozlamalar sahifasida **shaxsiy Gemini kaliti** kiritish mumkin (https://aistudio.google.com/app/apikey).
-Kiritilsa, AI shu kalit orqali ishlaydi va audio-gidda **Gemini TTS** ovozi ham yoqiladi. Kalit faqat o'sha brauzerda saqlanadi.
+**AI sozlamalari admin panelda** (**Admin → 🤖 AI sozlamalari**) turadi va butun tizimga amal qiladi. Foydalanuvchilarning Sozlamalar sahifasida kalit so'ralmaydi.
+- **Firebase AI Logic** rejimi (standart, tavsiya etiladi): kalit kerak emas.
+- **Gemini API kaliti** rejimi: admin kalit kiritadi. Kalit kiritilsa, audio-gidda **Gemini ovozi** (o'zbek tilida ham) ikkala rejimda yoqiladi.
+  Kalit bazada ochiq saqlanadi, shuning uchun uni Google Cloud Console'da `https://ilhomabdullaev.github.io/*` domeni va *Generative Language API* bilan cheklang.
 
 Firebase ham, kalit ham bo'lmasa, sayt ichki (oflayn) algoritm bilan ishlayveradi, shuning uchun demo to'xtamaydi.
 

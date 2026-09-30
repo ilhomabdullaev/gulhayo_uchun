@@ -34,6 +34,12 @@ service cloud.firestore {
       allow delete: if isAdmin();
     }
 
+    // Tizim sozlamalari (AI rejimi, model, ixtiyoriy Gemini kaliti): hamma o'qiydi, faqat admin o'zgartiradi
+    match /config/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
     // Obidalar narxi va faolligi: hamma o'qiydi, faqat admin o'zgartiradi
     match /places/{placeId} {
       allow read: if true;

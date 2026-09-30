@@ -1,6 +1,7 @@
 /* Interfeys tarjimalari: uz / en / ru */
 const I18N = {
   uz: {
+    "set.aiTitle": "Sun'iy intellekt", "set.aiAdmin": "AI tizim administratori tomonidan sozlanadi — sizga hech qanday kalit kiritish shart emas.",
     "set.aiMode": "AI Firebase orqali ishlaydi: foydalanuvchilar kalit kiritishi shart emas. Bu yerdagi shaxsiy kalit ixtiyoriy (kiritilsa, u ishlatiladi va Gemini ovozi ham yoqiladi).",
     "acc.login": "Kirish", "acc.admin": "Admin", "acc.logout": "Chiqish", "acc.loggedOut": "Tizimdan chiqdingiz",
     "login.t": "Tizimga kirish", "login.sub": "Buyurtmalaringiz barcha qurilmalarda saqlanishi uchun akkaunt oching.",
@@ -16,7 +17,7 @@ const I18N = {
     "common.loading": "Yuklanmoqda…", "common.back": "Orqaga", "common.next": "Davom etish", "common.free": "Bepul",
     "common.sum": "so'm", "common.h": "soat", "common.min": "daq", "common.km": "km", "common.add": "Savatga",
     "common.added": "Savatda ✓", "common.remove": "O'chirish", "common.yandex": "Yandex xaritada", "common.google": "Google Maps'da",
-    "common.error": "Xatolik yuz berdi", "common.aiNeeded": "AI funksiyasi uchun Sozlamalar sahifasida Google Gemini API kalitini kiriting. Hozir oflayn algoritm ishlatildi.",
+    "common.error": "Xatolik yuz berdi", "common.aiNeeded": "AI hozircha ulanmagan — oflayn algoritm ishlatildi.",
 
     "hero.title": "O'zbekistonga sayohat — bitta ilovada",
     "hero.sub": "Sun'iy intellekt marshrut tuzadi, chiptalarni onlayn olasiz, obidalar oldida esa gid sizga o'z ona tilingizda hikoya qiladi.",
@@ -76,6 +77,7 @@ const I18N = {
   },
 
   en: {
+    "set.aiTitle": "Artificial intelligence", "set.aiAdmin": "AI is configured by the site administrator — you do not need to enter any key.",
     "set.aiMode": "AI runs through Firebase: users do not need a key. A personal key here is optional (if set, it is used and also enables Gemini voice).",
     "acc.login": "Sign in", "acc.admin": "Admin", "acc.logout": "Sign out", "acc.loggedOut": "You have signed out",
     "login.t": "Sign in", "login.sub": "Create an account so your orders are saved across all your devices.",
@@ -91,7 +93,7 @@ const I18N = {
     "common.loading": "Loading…", "common.back": "Back", "common.next": "Continue", "common.free": "Free",
     "common.sum": "UZS", "common.h": "h", "common.min": "min", "common.km": "km", "common.add": "Add",
     "common.added": "In cart ✓", "common.remove": "Remove", "common.yandex": "Yandex Maps", "common.google": "Google Maps",
-    "common.error": "Something went wrong", "common.aiNeeded": "Enter a Google Gemini API key in Settings to enable AI. The offline algorithm was used instead.",
+    "common.error": "Something went wrong", "common.aiNeeded": "AI is not connected yet — the offline algorithm was used.",
 
     "hero.title": "Travel Uzbekistan — all in one app",
     "hero.sub": "AI builds your route, you buy tickets online, and at every monument a guide tells the story in your native language.",
@@ -151,6 +153,7 @@ const I18N = {
   },
 
   ru: {
+    "set.aiTitle": "Искусственный интеллект", "set.aiAdmin": "ИИ настраивается администратором сайта — вводить ключ не нужно.",
     "set.aiMode": "AI работает через Firebase: пользователям ключ не нужен. Личный ключ здесь необязателен (если указан, используется он и включается голос Gemini).",
     "acc.login": "Войти", "acc.admin": "Админ", "acc.logout": "Выйти", "acc.loggedOut": "Вы вышли из системы",
     "login.t": "Вход", "login.sub": "Создайте аккаунт, чтобы заказы сохранялись на всех ваших устройствах.",
@@ -166,7 +169,7 @@ const I18N = {
     "common.loading": "Загрузка…", "common.back": "Назад", "common.next": "Далее", "common.free": "Бесплатно",
     "common.sum": "сум", "common.h": "ч", "common.min": "мин", "common.km": "км", "common.add": "В корзину",
     "common.added": "В корзине ✓", "common.remove": "Удалить", "common.yandex": "Яндекс Карты", "common.google": "Google Maps",
-    "common.error": "Произошла ошибка", "common.aiNeeded": "Введите ключ Google Gemini API в Настройках, чтобы включить AI. Использован офлайн-алгоритм.",
+    "common.error": "Произошла ошибка", "common.aiNeeded": "ИИ пока не подключён — использован офлайн-алгоритм.",
 
     "hero.title": "Путешествие по Узбекистану — в одном приложении",
     "hero.sub": "Искусственный интеллект составит маршрут, билеты — онлайн, а у памятников гид расскажет историю на вашем родном языке.",

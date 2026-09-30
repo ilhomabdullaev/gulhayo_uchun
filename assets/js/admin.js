@@ -182,3 +182,50 @@ function renderUsers() {
       <td>${count[u.uid] || 0}</td><td class="small">${fmtDate(u.lastMs)}</td></tr>`; }).join("")}</tbody></table>`
     : `<p class="muted small">Hali foydalanuvchi yo'q</p>`;
 }
+
+/* ---------- AI sozlamalari (Firestore → config/ai) ---------- */
+function aiFormValues() {
+  return {
+    mode: (document.querySelector('input[name="aiMode"]:checked') || {}).value || "firebase",
+    key: $("aiKey").value.trim(),
+    model: $("aiModel").value.trim() || DEFAULT_MODEL,
+    ttsModel: $("aiTts").value.trim() || DEFAULT_TTS_MODEL
+  };
+}
+function aiStatus(msg, ok) { $("aiStatus").textContent = msg; $("aiStatus").style.color = ok === undefined ? "" : ok ? "var(--ok)" : "var(--danger)"; }
+function renderAiForm() {
+  const c = cloud.aiConfig || {};
+  const mode = c.mode || "firebase";
+  document.querySelectorAll('input[name="aiMode"]').forEach(r => { r.checked = r.value === mode; });
+  $("aiKey").value = c.key || "";
+  $("aiModel").value = c.model || DEFAULT_MODEL;
+  $("aiTts").value = c.ttsModel || DEFAULT_TTS_MODEL;
+}
+document.addEventListener("aiconfig", renderAiForm);
+renderAiForm();
+$("aiShow").onclick = () => { $("aiKey").type = $("aiKey").type === "password" ? "text" : "password"; };
+$("aiForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  const v = aiFormValues();
+  if (v.mode === "key" && !v.key) { aiStatus("«Gemini API kaliti» rejimi uchun kalit kiriting", false); $("aiKey").focus(); return; }
+  try { await cloud.saveAiConfig(v); aiStatus("✓ Saqlandi — barcha foydalanuvchilar uchun amal qiladi", true); renderNav("admin"); }
+  catch (err) { aiStatus("Saqlanmadi: " + authError(err) + " (Firestore Rules'ga config bo'limini qo'shganmisiz?)", false); }
+});
+$("aiTest").onclick = async () => {
+  const v = aiFormValues();
+  if (v.mode === "key" && !v.key) { aiStatus("Kalit kiriting", false); return; }
+  aiStatus("Tekshirilmoqda…");
+  try {
+    const txt = await gemini.generate("Reply with exactly: Salom, Tourist.uz!", { temperature: 0 }, v);
+    aiStatus(`✓ Ishlayapti (${v.mode === "key" ? "API kaliti" : "Firebase AI Logic"}, ${v.model}): «${txt.trim().slice(0, 60)}»`, true);
+  } catch (err) { aiStatus("Xato: " + (err.message || err), false); }
+};
+$("aiLoad").onclick = async () => {
+  const key = $("aiKey").value.trim();
+  if (!key) { aiStatus("Modellar ro'yxati uchun kalit kerak", false); $("aiKey").focus(); return; }
+  try {
+    const models = await gemini.listModels(key);
+    $("aiModels").innerHTML = models.map(m => `<option value="${esc(m.id)}">${esc(m.label)}</option>`).join("");
+    aiStatus(`✓ ${models.length} ta model: ${models.slice(0, 6).map(m => m.id).join(", ")}…`, true);
+  } catch (err) { aiStatus("Xato: " + err.message, false); }
+};

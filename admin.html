@@ -25,6 +25,7 @@
         <button data-tab="check">✅ Chipta tekshirish</button>
         <button data-tab="places">🕌 Obidalar va narxlar</button>
         <button data-tab="users">👥 Foydalanuvchilar</button>
+        <button data-tab="ai">🤖 AI sozlamalari</button>
       </nav>
 
       <section data-pane="stats">
@@ -58,6 +59,45 @@
       <section data-pane="places" class="hidden">
         <p class="notice small">Narx yoki holat o'zgartirilsa, saytdagi barcha foydalanuvchilarga darhol ko'rinadi. «Faol» belgisi olib tashlangan obida sayohat sahifasida ko'rinmaydi.</p>
         <div class="card"><div class="table-wrap" id="placesTable"></div></div>
+      </section>
+
+      <section data-pane="ai" class="hidden">
+        <form class="card" id="aiForm" style="max-width:760px" autocomplete="off">
+          <h3>Sun'iy intellekt (Gemini) — butun tizim uchun</h3>
+          <p class="small muted">Bu yerdagi sozlama saytning barcha foydalanuvchilariga amal qiladi. Foydalanuvchilar hech narsa kiritmaydi.</p>
+          <div class="field">
+            <label>Ishlash usuli</label>
+            <label style="font-weight:500;display:flex;gap:8px;align-items:flex-start"><input type="radio" name="aiMode" value="firebase" style="width:auto;margin-top:4px">
+              <span><b>Firebase AI Logic</b> (tavsiya etiladi) — kalit kerak emas, hech qayerda ko'rinmaydi.</span></label>
+            <label style="font-weight:500;display:flex;gap:8px;align-items:flex-start"><input type="radio" name="aiMode" value="key" style="width:auto;margin-top:4px">
+              <span><b>Gemini API kaliti</b> — matn AI ham shu kalit orqali ishlaydi.</span></label>
+          </div>
+          <div class="field">
+            <label for="aiKey">Gemini API kaliti (ixtiyoriy)</label>
+            <div class="row" style="flex-wrap:nowrap">
+              <input id="aiKey" type="password" placeholder="AIza…" spellcheck="false">
+              <button type="button" class="btn ghost sm" id="aiShow">👁</button>
+            </div>
+            <p class="small muted">Kalit kiritilsa, audio-gidda <b>Gemini ovozi</b> (o'zbek tilida ham) ikkala rejimda yoqiladi.
+              Kalit: <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener">aistudio.google.com/app/apikey ↗</a></p>
+          </div>
+          <div class="grid c2">
+            <div class="field"><label for="aiModel">Matn modeli</label>
+              <input id="aiModel" list="aiModels" spellcheck="false"><datalist id="aiModels"></datalist></div>
+            <div class="field"><label for="aiTts">Ovoz (TTS) modeli</label><input id="aiTts" spellcheck="false"></div>
+          </div>
+          <div class="row">
+            <button class="btn" type="submit">💾 Saqlash</button>
+            <button class="btn accent" type="button" id="aiTest">Tekshirish</button>
+            <button class="btn ghost" type="button" id="aiLoad">Modellar ro'yxati</button>
+          </div>
+          <p id="aiStatus" class="small" style="margin-top:12px"></p>
+          <div class="notice small" style="margin-top:12px"><b>⚠️ Kalit xavfsizligi.</b> Kalit barcha foydalanuvchilar brauzerida ishlashi uchun bazada
+            ochiq saqlanadi, ya'ni texnik bilimli odam uni ko'rib olishi mumkin. Shuning uchun kalitni albatta cheklang:
+            <a href="https://console.cloud.google.com/apis/credentials" target="_blank" rel="noopener">Google Cloud Console → Credentials</a> → kalitni oching →
+            <b>Application restrictions: Websites</b> → <code>https://ilhomabdullaev.github.io/*</code>;
+            <b>API restrictions</b> → faqat <i>Generative Language API</i>. Maxfiy saqlash kerak bo'lsa — «Firebase AI Logic» rejimidan foydalaning.</div>
+        </form>
       </section>
 
       <section data-pane="users" class="hidden">

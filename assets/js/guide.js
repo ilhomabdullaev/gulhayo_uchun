@@ -20,6 +20,7 @@ function renderControls() {
   const first = PLACES.find(p => p.region === reg) || PLACES[0];
   gSim.value = current ? current.id : first.id;
   aiVoice.checked = !!store.get("aiVoice", false);
+  aiVoice.closest("label").classList.toggle("hidden", !gemini.ttsKey()); // Gemini ovozi faqat admin kalit kiritganda
 }
 gLang.addEventListener("change", () => { store.set("guideLang", gLang.value); if (current) openPlace(current, false); });
 aiVoice.addEventListener("change", () => store.set("aiVoice", aiVoice.checked));
@@ -173,7 +174,7 @@ function stopSpeech() {
 async function speak(text, lang) {
   stopSpeech();
   const voice = findVoice(lang);
-  if ((aiVoice.checked || !voice) && gemini.key()) { // Gemini TTS faqat shaxsiy kalit bilan
+  if ((aiVoice.checked || !voice) && gemini.ttsKey()) { // Gemini ovozi — admin kalit kiritgan bo'lsa
     try { await speakGemini(text); return; } catch (e) { console.warn("Gemini TTS:", e.message); }
   }
   if (!voice) { toast(t("guide.noVoice")); return; }
@@ -188,10 +189,10 @@ async function speak(text, lang) {
 
 /* Gemini TTS: 24 kHz 16-bit PCM → WAV */
 async function speakGemini(text) {
-  const model = store.get("gemini.ttsModel", "gemini-2.5-flash-preview-tts");
+  const model = gemini.ttsModel();
   const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`, {
     method: "POST",
-    headers: { "Content-Type": "application/json", "x-goog-api-key": gemini.key() },
+    headers: { "Content-Type": "application/json", "x-goog-api-key": gemini.ttsKey() },
     body: JSON.stringify({
       contents: [{ parts: [{ text }] }],
       generationConfig: { responseModalities: ["AUDIO"], speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: "Kore" } } } }
@@ -229,6 +230,7 @@ document.addEventListener("langchange", () => {
   if (me) setPosition(me.lat, me.lon, true);
   if (current) openPlace(current, false); // hikoyani yangi tilda qayta yuklash
 });
+document.addEventListener("aiconfig", renderControls);
 renderControls();
 // Boshlang'ich holat: tanlangan hudud markazi
 const startReg = regionById(store.get("trip", {}).region) || REGIONS[0];
