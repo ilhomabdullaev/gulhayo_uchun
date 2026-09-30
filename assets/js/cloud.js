@@ -82,6 +82,18 @@ const cloud = {
     }, { merge: true });
   },
 
+  /* ---------- Gemini (Firebase AI Logic): kalit Firebase serverida, brauzerga chiqmaydi ---------- */
+  async generate(prompt, { json = false, system = "", temperature = 0.7, model = "gemini-2.5-flash" } = {}) {
+    if (!this._ai) this._ai = FB.getAI(this._app, { backend: new FB.GoogleAIBackend() });
+    const m = FB.getGenerativeModel(this._ai, {
+      model,
+      ...(system ? { systemInstruction: system } : {}),
+      generationConfig: { temperature, ...(json ? { responseMimeType: "application/json" } : {}) }
+    });
+    const res = await m.generateContent(prompt);
+    return res.response.text();
+  },
+
   /* ---------- Buyurtmalar ---------- */
   async saveOrder(order) {
     await FB.setDoc(FB.doc(this._db, "orders", order.id), {

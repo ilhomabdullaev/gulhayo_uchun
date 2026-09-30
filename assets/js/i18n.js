@@ -1,6 +1,7 @@
 /* Interfeys tarjimalari: uz / en / ru */
 const I18N = {
   uz: {
+    "set.aiMode": "AI Firebase orqali ishlaydi: foydalanuvchilar kalit kiritishi shart emas. Bu yerdagi shaxsiy kalit ixtiyoriy (kiritilsa, u ishlatiladi va Gemini ovozi ham yoqiladi).",
     "acc.login": "Kirish", "acc.admin": "Admin", "acc.logout": "Chiqish", "acc.loggedOut": "Tizimdan chiqdingiz",
     "login.t": "Tizimga kirish", "login.sub": "Buyurtmalaringiz barcha qurilmalarda saqlanishi uchun akkaunt oching.",
     "login.google": "Google orqali kirish", "login.or": "yoki email orqali", "login.name": "Ism", "login.email": "Email",
@@ -75,6 +76,7 @@ const I18N = {
   },
 
   en: {
+    "set.aiMode": "AI runs through Firebase: users do not need a key. A personal key here is optional (if set, it is used and also enables Gemini voice).",
     "acc.login": "Sign in", "acc.admin": "Admin", "acc.logout": "Sign out", "acc.loggedOut": "You have signed out",
     "login.t": "Sign in", "login.sub": "Create an account so your orders are saved across all your devices.",
     "login.google": "Continue with Google", "login.or": "or with email", "login.name": "Name", "login.email": "Email",
@@ -149,6 +151,7 @@ const I18N = {
   },
 
   ru: {
+    "set.aiMode": "AI работает через Firebase: пользователям ключ не нужен. Личный ключ здесь необязателен (если указан, используется он и включается голос Gemini).",
     "acc.login": "Войти", "acc.admin": "Админ", "acc.logout": "Выйти", "acc.loggedOut": "Вы вышли из системы",
     "login.t": "Вход", "login.sub": "Создайте аккаунт, чтобы заказы сохранялись на всех ваших устройствах.",
     "login.google": "Войти через Google", "login.or": "или по email", "login.name": "Имя", "login.email": "Email",

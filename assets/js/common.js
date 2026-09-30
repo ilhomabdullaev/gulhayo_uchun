@@ -159,10 +159,23 @@ const DEFAULT_MODEL = "gemini-2.5-flash";
 const gemini = {
   key() { return store.get("gemini.key", ""); },
   model() { return store.get("gemini.model", DEFAULT_MODEL) || DEFAULT_MODEL; },
-  enabled() { return !!this.key(); },
+  /* AI ikki yo'l bilan ishlaydi: 1) Firebase AI Logic — kalit serverda, foydalanuvchi hech narsa kiritmaydi;
+     2) Sozlamalarda kiritilgan shaxsiy Gemini kaliti (kiritilgan bo'lsa, u ustun turadi). */
+  viaFirebase() { return !this.key() && typeof cloud !== "undefined" && cloud.enabled && !this._fbFailed; },
+  enabled() { return !!this.key() || this.viaFirebase(); },
 
   async generate(prompt, { json = false, system = "", temperature = 0.7 } = {}) {
     const key = this.key();
+    if (!key && this.viaFirebase()) {
+      try {
+        const text = await cloud.generate(prompt, { json, system, temperature, model: this.model() });
+        return json ? parseJsonLoose(text) : text;
+      } catch (e) {
+        // AI Logic konsolda yoqilmagan bo'lsa — qayta-qayta urinmaslik uchun shu sahifada o'chiramiz
+        if (/api-not-enabled|not been used|disabled|PERMISSION_DENIED|403/i.test(`${e.code} ${e.message}`)) this._fbFailed = true;
+        throw e;
+      }
+    }
     if (!key) throw new Error("NO_KEY");
     const body = {
       contents: [{ role: "user", parts: [{ text: prompt }] }],

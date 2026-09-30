@@ -22,18 +22,21 @@ O'zbekistonga tashrif buyuruvchi sayyohlar uchun platforma. Imkoniyatlari:
 
 Server, PHP yoki Python kerak emas. Sayt statik: HTML, CSS va JavaScript.
 
-## 2. Google Gemini API kalitini ulash
+## 2. Sun'iy intellekt (Gemini) — foydalanuvchilarga kalit kerak emas
 
-1. https://aistudio.google.com/app/apikey sahifasida bepul kalit oling (`AIza...` bilan boshlanadi).
-2. Saytda **Sozlamalar** sahifasini oching, kalitni kiriting va **Saqlash** tugmasini bosing.
-3. **Ulanishni tekshirish** tugmasini bosing. Yashil yozuv chiqsa, AI ulangan. Menyudagi `AI` belgisi ham yashil bo'ladi.
-4. Model maydonida `gemini-2.5-flash` turadi. **Mavjud modellarni yuklash** tugmasi orqali boshqa modelni tanlash mumkin.
+AI **Firebase AI Logic** orqali ishlaydi. Gemini kaliti Firebase serverida saqlanadi va brauzerga chiqmaydi, foydalanuvchilar hech narsa kiritmaydi.
+Uni bir marta yoqish kerak:
 
-> **Xavfsizlik.** Kalit faqat shu brauzerda saqlanadi (localStorage) va to'g'ridan-to'g'ri Google serveriga yuboriladi. GitHub'ga yuklanmaydi.
-> Himoyada ishlatiladigan kalitga Google Cloud Console → *APIs & Services → Credentials → Application restrictions → Websites* orqali `https://ilhomabdullaev.github.io/*` cheklovini qo'ying.
-> Kalitni hech qachon kodga yozmang.
+1. Firebase Console → **AI services → AI Logic → Get started** bo'limini oching.
+2. **Gemini Developer API** ni tanlang, u bepul tarifda ham ishlaydi, va **Enable API** tugmasini bosing.
+3. Tayyor. Saytdagi menyuda `AI` belgisi yashil bo'ladi. **Sozlamalar → Ulanishni tekshirish** tugmasi bilan tekshirib ko'rish mumkin.
 
-AI kaliti bo'lmasa ham sayt ishlaydi. Bu holda ichki (oflayn) algoritm ishlatiladi, shuning uchun internet yoki kalit bilan muammo bo'lsa ham demo to'xtamaydi.
+Ixtiyoriy: Sozlamalar sahifasida **shaxsiy Gemini kaliti** kiritish mumkin (https://aistudio.google.com/app/apikey).
+Kiritilsa, AI shu kalit orqali ishlaydi va audio-gidda **Gemini TTS** ovozi ham yoqiladi. Kalit faqat o'sha brauzerda saqlanadi.
+
+Firebase ham, kalit ham bo'lmasa, sayt ichki (oflayn) algoritm bilan ishlayveradi, shuning uchun demo to'xtamaydi.
+
+> Keyinchalik (real foydalanuvchilar ko'payganda) Firebase **App Check** ni yoqish tavsiya etiladi. U AI'dan faqat sizning saytingiz foydalanishini kafolatlaydi.
 
 ## 3. Ro'yxatdan o'tish va admin panel (Firebase)
 

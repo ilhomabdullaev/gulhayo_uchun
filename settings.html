@@ -14,6 +14,7 @@
 
     <form class="card" id="keyForm" autocomplete="off">
       <h2>🤖 Google Gemini AI</h2>
+      <p class="notice info small hidden" id="aiMode" data-i18n="set.aiMode"></p>
       <div class="field">
         <label for="sKey" data-i18n="set.key"></label>
         <div class="row" style="flex-wrap:nowrap">
@@ -109,6 +110,7 @@
       try { Object.keys(localStorage).filter(k => k.startsWith("tu.narr.")).forEach(k => localStorage.removeItem(k)); } catch (e) { /* ignore */ }
       updateCartBadge(); toast(t("set.resetDone"), "ok");
     };
+    cloud.onChange(() => $("aiMode").classList.toggle("hidden", !cloud.enabled));
     load();
   </script>
 </body>

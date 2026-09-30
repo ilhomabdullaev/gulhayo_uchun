@@ -173,7 +173,7 @@ function stopSpeech() {
 async function speak(text, lang) {
   stopSpeech();
   const voice = findVoice(lang);
-  if ((aiVoice.checked || !voice) && gemini.enabled()) {
+  if ((aiVoice.checked || !voice) && gemini.key()) { // Gemini TTS faqat shaxsiy kalit bilan
     try { await speakGemini(text); return; } catch (e) { console.warn("Gemini TTS:", e.message); }
   }
   if (!voice) { toast(t("guide.noVoice")); return; }
