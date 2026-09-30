@@ -231,3 +231,19 @@ footer#foot { border-top: 1px solid var(--border); padding: 20px 0; color: var(-
 .map.map-full { position: fixed !important; inset: 0; width: 100vw; height: 100vh; height: 100dvh; border-radius: 0; border: 0; z-index: 2000; }
 body.map-full-open { overflow: hidden; }
 body.map-full-open #nav { z-index: 1; }
+
+/* ---------- Akkaunt, kirish, admin ---------- */
+.acc { display: inline-flex; gap: 6px; align-items: center; }
+.acc-name { font-size: .85rem; font-weight: 600; max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.auth-card { max-width: 440px; margin: 32px auto; }
+.divider { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: .85rem; margin: 16px 0; }
+.divider::before, .divider::after { content: ""; flex: 1; border-top: 1px solid var(--border); }
+.tabs { display: flex; gap: 6px; flex-wrap: wrap; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
+.tabs button { background: none; border: 0; border-bottom: 3px solid transparent; padding: 10px 14px; font: inherit; font-weight: 600; color: var(--muted); cursor: pointer; }
+.tabs button.sel { color: var(--primary); border-color: var(--primary); }
+.status { font-size: .78rem; font-weight: 700; padding: 3px 9px; border-radius: 99px; }
+.status.paid_demo { background: color-mix(in srgb, var(--accent) 16%, transparent); color: var(--accent); }
+.status.used { background: color-mix(in srgb, var(--ok) 16%, transparent); color: var(--ok); }
+.status.cancelled { background: color-mix(in srgb, var(--danger) 14%, transparent); color: var(--danger); }
+.acc .btn { white-space: nowrap; }
+@media (max-width: 1240px) { .acc-name { display: none; } .links a { padding: 8px 9px; } }

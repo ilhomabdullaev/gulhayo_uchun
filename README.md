@@ -35,7 +35,39 @@ Server, PHP yoki Python kerak emas. Sayt statik: HTML, CSS va JavaScript.
 
 AI kaliti bo'lmasa ham sayt ishlaydi. Bu holda ichki (oflayn) algoritm ishlatiladi, shuning uchun internet yoki kalit bilan muammo bo'lsa ham demo to'xtamaydi.
 
-## 3. Hujjatlar (`docs/` papkasi)
+## 3. Ro'yxatdan o'tish va admin panel (Firebase)
+
+Firebase ulanmagan bo'lsa ham sayt demo rejimida ishlaydi: ma'lumotlar faqat brauzerda saqlanadi.
+Ulangandan keyin quyidagi imkoniyatlar ishlaydi:
+
+- foydalanuvchilar **email/parol** yoki **Google** orqali ro'yxatdan o'tadi;
+- buyurtmalar umumiy bazada saqlanadi va istalgan qurilmadan ko'rinadi;
+- `admin.html` sahifasida **admin panel** ochiladi: statistika, barcha buyurtmalar, **chipta tekshirish** (kassir rejimi), obidalar narxini o'zgartirish va o'chirish, foydalanuvchilar ro'yxati.
+
+### Firebase loyihasini ochish (bir marta, ~10 daqiqa, bepul)
+
+1. https://console.firebase.google.com sahifasida **Add project** tugmasini bosing, masalan, `tourist-uz` nomini kiriting. Google Analytics shart emas.
+2. **Build → Authentication → Get started** bo'limida:
+   - **Sign-in method** yorlig'ida **Email/Password** va **Google** ni yoqing.
+   - **Settings → Authorized domains** yorlig'ida `ilhomabdullaev.github.io` domenini qo'shing.
+3. **Build → Firestore Database → Create database** bo'limida **Production mode** va joylashuvni (masalan, `eur3`) tanlang.
+   - **Rules** yorlig'iga repozitoriydagi `firestore.rules` faylini to'liq nusxalang.
+   - `admin_email@example.com` o'rniga admin emailini yozing va **Publish** tugmasini bosing.
+4. **⚙️ Project settings → Your apps → Web (`</>`)** bo'limida ilovani ro'yxatdan o'tkazing. Chiqqan `firebaseConfig` qiymatlarini `assets/js/firebase-config.js` fayliga qo'ying.
+5. Shu faylda `ADMIN_EMAILS` ro'yxatiga admin emailini yozing. U `firestore.rules` faylidagi email bilan bir xil bo'lishi shart.
+6. Admin o'sha email bilan saytda ro'yxatdan o'tadi. Shundan keyin menyuda **Admin** tugmasi paydo bo'ladi.
+
+> `firebaseConfig` qiymatlari maxfiy emas, ular baribir brauzerga yuboriladi. Haqiqiy himoya `firestore.rules` qoidalarida:
+> foydalanuvchi faqat o'z buyurtmalarini ko'radi, holat va narxlarni faqat admin o'zgartiradi.
+> Bu qoidalar lokal Firebase emulyatorida sinovdan o'tgan.
+> Cheklov: prototipda to'lov demo rejimida, shuning uchun buyurtma summasini brauzer yuboradi. Haqiqiy to'lov ulanganda summa serverda hisoblanishi kerak.
+
+**Keyinchalik o'z serveringizga ko'chirish:** Firebase'ning bepul tarifi prototip va dastlabki foydalanuvchilar uchun yetarli.
+Hajm oshsa, sayt fayllarini istalgan xostingga (va `tourist.uz` domeniga) ko'chirish mumkin. Firebase shu holicha ishlashda davom etadi.
+Yoki ma'lumotlarni eksport qilib, o'z backendingizga (PHP/Laravel yoki Python/FastAPI + PostgreSQL) o'tkazasiz.
+Buning uchun faqat `assets/js/cloud.js` qatlamini almashtirish kifoya.
+
+## 4. Hujjatlar (`docs/` papkasi)
 
 | Fayl | Mazmuni |
 |---|---|
@@ -51,7 +83,7 @@ pip install python-docx python-pptx openpyxl
 python tools/build_docs.py
 ```
 
-## 4. Loyiha tuzilishi
+## 5. Loyiha tuzilishi
 
 ```
 index.html        Bosh sahifa
@@ -60,6 +92,11 @@ planner.html      AI Sayohat Planner
 guide.html        GPS audio-gid
 cart.html         Chiptalar savati va QR
 settings.html     Gemini API kaliti
+login.html        Kirish / ro'yxatdan o'tish (Firebase Auth)
+admin.html        Admin panel
+firestore.rules   Firestore xavfsizlik qoidalari
+assets/js/cloud.js            Firebase qatlami (auth, buyurtmalar, narxlar)
+assets/js/firebase-config.js  Firebase sozlamasi va admin email(lar)
 assets/js/data.js Obidalar, hududlar, davlatlar, transport (tahrirlash oson)
 assets/js/i18n.js Interfeys tarjimalari (uz / en / ru)
 assets/js/common.js  Umumiy funksiyalar: Gemini klienti, geo, savat
@@ -68,7 +105,7 @@ tools/build_docs.py  Tanlov hujjatlarini yaratuvchi skript
 
 **Yangi obida qo'shish:** `assets/js/data.js` faylidagi `PLACES` ro'yxatiga yangi yozuv qo'shing (id, region, koordinata, narx, nomi va tavsifi 3 tilda).
 
-## 5. Demo cheklovlari (himoyada ochiq ayting)
+## 6. Demo cheklovlari (himoyada ochiq ayting)
 
 - Chipta narxlari va koordinatalar **taxminiy**. To'lov **demo**: karta ma'lumoti so'ralmaydi.
 - Tirbandlik masofa va kun vaqtiga bog'liq koeffitsiyent bilan hisoblanadi. Real vaqt API to'liq versiyada ulanadi.

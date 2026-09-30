@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Admin panel — Tourist.uz</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛠️</text></svg>">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <header id="nav"></header>
+  <main class="container">
+    <div class="page-head row" style="justify-content:space-between">
+      <h1 style="margin:0">🛠️ Admin panel</h1>
+      <button class="btn ghost sm hidden" id="refresh">🔄 Yangilash</button>
+    </div>
+
+    <div id="gate" class="card flat"><span class="spinner"></span></div>
+
+    <div id="panel" class="hidden">
+      <nav class="tabs" id="tabs">
+        <button data-tab="stats" class="sel">📊 Statistika</button>
+        <button data-tab="orders">🎟️ Buyurtmalar</button>
+        <button data-tab="check">✅ Chipta tekshirish</button>
+        <button data-tab="places">🕌 Obidalar va narxlar</button>
+        <button data-tab="users">👥 Foydalanuvchilar</button>
+      </nav>
+
+      <section data-pane="stats">
+        <div class="summary" id="kpis"></div>
+        <div class="grid c2" style="margin-top:16px;align-items:start">
+          <div class="card"><h3>Eng ko'p sotilgan obidalar</h3><div class="table-wrap" id="topPlaces"></div></div>
+          <div class="card"><h3>Hududlar bo'yicha tushum</h3><div class="table-wrap" id="byRegion"></div></div>
+        </div>
+      </section>
+
+      <section data-pane="orders" class="hidden">
+        <div class="row" style="margin-bottom:12px">
+          <input id="oSearch" type="search" placeholder="🔎 Kod, email yoki ism bo'yicha qidirish" style="max-width:360px">
+          <select id="oStatus" style="max-width:220px"><option value="">Barcha holatlar</option></select>
+        </div>
+        <div class="card"><div class="table-wrap" id="ordersTable"></div></div>
+      </section>
+
+      <section data-pane="check" class="hidden">
+        <div class="card" style="max-width:640px">
+          <h3>Obida kirishida chiptani tekshirish</h3>
+          <p class="small muted">QR koddagi yoki chipta ustidagi kodni kiriting (masalan, TU-XXXX-XXXX). QR skaner qurilmasi odatda matnni shu maydonga o'zi yozadi.</p>
+          <form id="checkForm" class="row" style="flex-wrap:nowrap">
+            <input id="checkCode" placeholder="TU-..." autocomplete="off" style="text-transform:uppercase">
+            <button class="btn" type="submit">Tekshirish</button>
+          </form>
+          <div id="checkResult" style="margin-top:16px"></div>
+        </div>
+      </section>
+
+      <section data-pane="places" class="hidden">
+        <p class="notice small">Narx yoki holat o'zgartirilsa, saytdagi barcha foydalanuvchilarga darhol ko'rinadi. «Faol» belgisi olib tashlangan obida sayohat sahifasida ko'rinmaydi.</p>
+        <div class="card"><div class="table-wrap" id="placesTable"></div></div>
+      </section>
+
+      <section data-pane="users" class="hidden">
+        <div class="card"><div class="table-wrap" id="usersTable"></div></div>
+      </section>
+    </div>
+  </main>
+  <footer id="foot"></footer>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/common.js"></script>
+  <script>window.KEEP_INACTIVE_PLACES = true; // admin barcha obidalarni ko'rishi kerak</script>
+  <script src="assets/vendor/firebase/firebase.bundle.js"></script>
+  <script src="assets/js/firebase-config.js"></script>
+  <script src="assets/js/cloud.js"></script>
+  <script src="assets/js/admin.js"></script>
+</body>
+</html>

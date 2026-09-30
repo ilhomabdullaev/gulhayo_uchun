@@ -1,6 +1,14 @@
 /* Interfeys tarjimalari: uz / en / ru */
 const I18N = {
   uz: {
+    "acc.login": "Kirish", "acc.admin": "Admin", "acc.logout": "Chiqish", "acc.loggedOut": "Tizimdan chiqdingiz",
+    "login.t": "Tizimga kirish", "login.sub": "Buyurtmalaringiz barcha qurilmalarda saqlanishi uchun akkaunt oching.",
+    "login.google": "Google orqali kirish", "login.or": "yoki email orqali", "login.name": "Ism", "login.email": "Email",
+    "login.pass": "Parol (kamida 6 belgi)", "login.signin": "Kirish", "login.signup": "Ro'yxatdan o'tish",
+    "login.toSignup": "Akkauntingiz yo'qmi? Ro'yxatdan o'ting", "login.toSignin": "Akkauntingiz bormi? Kiring",
+    "login.forgot": "Parolni unutdingizmi?", "login.resetSent": "Parolni tiklash havolasi emailingizga yuborildi",
+    "login.disabled": "Ro'yxatdan o'tish hali ulanmagan (Firebase sozlanmagan). Sayt demo rejimida ishlamoqda.",
+    "login.hello": "Xush kelibsiz", "cart.loginToPay": "Buyurtma berish uchun tizimga kiring",
     "nav.home": "Bosh sahifa", "nav.trip": "Sayohat", "nav.planner": "AI Planner", "nav.guide": "Audio-gid",
     "nav.cart": "Chiptalar", "nav.settings": "Sozlamalar",
     "badge.demo": "Demo versiya", "ai.on": "AI ulangan", "ai.off": "AI ulanmagan (oflayn rejim)",
@@ -67,6 +75,14 @@ const I18N = {
   },
 
   en: {
+    "acc.login": "Sign in", "acc.admin": "Admin", "acc.logout": "Sign out", "acc.loggedOut": "You have signed out",
+    "login.t": "Sign in", "login.sub": "Create an account so your orders are saved across all your devices.",
+    "login.google": "Continue with Google", "login.or": "or with email", "login.name": "Name", "login.email": "Email",
+    "login.pass": "Password (at least 6 characters)", "login.signin": "Sign in", "login.signup": "Create account",
+    "login.toSignup": "No account? Create one", "login.toSignin": "Already have an account? Sign in",
+    "login.forgot": "Forgot password?", "login.resetSent": "A password reset link has been sent to your email",
+    "login.disabled": "Accounts are not connected yet (Firebase not configured). The site runs in demo mode.",
+    "login.hello": "Welcome", "cart.loginToPay": "Please sign in to place an order",
     "nav.home": "Home", "nav.trip": "Trip", "nav.planner": "AI Planner", "nav.guide": "Audio guide",
     "nav.cart": "Tickets", "nav.settings": "Settings",
     "badge.demo": "Demo version", "ai.on": "AI connected", "ai.off": "AI not connected (offline mode)",
@@ -133,6 +149,14 @@ const I18N = {
   },
 
   ru: {
+    "acc.login": "Войти", "acc.admin": "Админ", "acc.logout": "Выйти", "acc.loggedOut": "Вы вышли из системы",
+    "login.t": "Вход", "login.sub": "Создайте аккаунт, чтобы заказы сохранялись на всех ваших устройствах.",
+    "login.google": "Войти через Google", "login.or": "или по email", "login.name": "Имя", "login.email": "Email",
+    "login.pass": "Пароль (не менее 6 символов)", "login.signin": "Войти", "login.signup": "Зарегистрироваться",
+    "login.toSignup": "Нет аккаунта? Зарегистрируйтесь", "login.toSignin": "Уже есть аккаунт? Войдите",
+    "login.forgot": "Забыли пароль?", "login.resetSent": "Ссылка для сброса пароля отправлена на ваш email",
+    "login.disabled": "Регистрация пока не подключена (Firebase не настроен). Сайт работает в демо-режиме.",
+    "login.hello": "Добро пожаловать", "cart.loginToPay": "Войдите, чтобы оформить заказ",
     "nav.home": "Главная", "nav.trip": "Поездка", "nav.planner": "AI Планер", "nav.guide": "Аудиогид",
     "nav.cart": "Билеты", "nav.settings": "Настройки",
     "badge.demo": "Демо-версия", "ai.on": "AI подключён", "ai.off": "AI не подключён (офлайн-режим)",

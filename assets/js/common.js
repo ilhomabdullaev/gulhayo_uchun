@@ -212,6 +212,7 @@ function renderNav(active) {
         ${links.map(([href, key, id]) => `<a href="${href}" class="${id === active ? "active" : ""}"><span data-i18n="${key}"></span>${id === "cart" ? '<span id="cartBadge" class="badge" hidden>0</span>' : ""}</a>`).join("")}
       </nav>
       <div class="nav-right">
+        <span id="accountNav" class="acc"></span>
         <span class="ai-dot ${gemini.enabled() ? "on" : "off"}" title="${esc(t(gemini.enabled() ? "ai.on" : "ai.off"))}">AI</span>
         <select id="langSelect" aria-label="Language" onchange="setLang(this.value)">
           <option value="uz">UZ</option><option value="en">EN</option><option value="ru">RU</option>
@@ -222,6 +223,7 @@ function renderNav(active) {
   if (footer) footer.innerHTML = `<div class="container"><p data-i18n="foot"></p></div>`;
   applyI18n();
   updateCartBadge();
+  if (typeof renderAccountNav === "function") renderAccountNav();
   document.addEventListener("langchange", () => {
     const dot = document.querySelector(".ai-dot");
     if (dot) dot.title = t(gemini.enabled() ? "ai.on" : "ai.off");

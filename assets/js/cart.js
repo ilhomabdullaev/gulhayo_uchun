@@ -43,15 +43,34 @@ function renderCart() {
   box.querySelectorAll("[data-qty]").forEach(inp => inp.addEventListener("change", () => { cart.setQty(inp.dataset.qty, parseInt(inp.value) || 1); renderCart(); }));
   box.querySelectorAll("[data-del]").forEach(b => b.addEventListener("click", () => { cart.remove(b.dataset.del); renderCart(); }));
   document.getElementById("clearCart").onclick = () => { cart.clear(); renderCart(); };
-  document.getElementById("payForm").addEventListener("submit", e => {
+  if (cloud.user) {
+    document.getElementById("cName").value ||= cloud.user.name;
+    document.getElementById("cEmail").value ||= cloud.user.email;
+  }
+  document.getElementById("payForm").addEventListener("submit", async e => {
     e.preventDefault();
+    // Firebase ulangan bo'lsa — buyurtma faqat ro'yxatdan o'tgan foydalanuvchi nomidan
+    if (cloud.enabled && !cloud.user) {
+      toast(t("cart.loginToPay"));
+      setTimeout(() => { location.href = "login.html?next=cart.html"; }, 700);
+      return;
+    }
+    const btn = e.submitter || document.querySelector("#payForm [type=submit]");
+    btn.disabled = true;
     const order = {
       id: "TU-" + Date.now().toString(36).toUpperCase() + "-" + Math.random().toString(36).slice(2, 6).toUpperCase(),
       date: document.getElementById("cDate").value,
       name: document.getElementById("cName").value.trim(),
       items: cart.items(), total: cart.total(), created: new Date().toISOString()
     };
-    const orders = store.get("orders", []); orders.unshift(order); store.set("orders", orders);
+    try {
+      if (cloud.enabled) await cloud.saveOrder(order);
+      else { const orders = store.get("orders", []); orders.unshift(order); store.set("orders", orders); }
+    } catch (err) {
+      btn.disabled = false;
+      toast(`${t("common.error")}: ${authError(err)}`, "error");
+      return;
+    }
     cart.clear(); renderCart(); showOrder(order); renderOrders();
     toast("✅ " + t("cart.order"), "ok");
   });
@@ -70,7 +89,7 @@ function ticketHtml(o) {
   return `<div class="ticket">
     <div class="qr" id="qr-${o.id}"></div>
     <div style="flex:1;min-width:220px">
-      <span class="pill gold">DEMO</span>
+      <span class="pill gold">DEMO</span>${o.status ? ` <span class="status ${esc(o.status)}">${esc(statusLabel(o.status))}</span>` : ""}
       <h3 style="margin:8px 0">${esc(o.id)}</h3>
       <div class="small">📅 ${esc(o.date)} · 👤 ${esc(o.name)}</div>
       <ul class="small">${o.items.map(i => `<li>${esc(L(placeById(i.id)?.name))} × ${i.qty}</li>`).join("")}</ul>
@@ -86,13 +105,20 @@ function showOrder(o) {
   box.scrollIntoView({ behavior: "smooth" });
 }
 
-function renderOrders() {
-  const orders = store.get("orders", []);
+async function renderOrders() {
   const box = document.getElementById("orders");
+  let orders;
+  if (cloud.enabled) {
+    if (!cloud.user) { box.innerHTML = `<p class="muted"><a href="login.html?next=cart.html">${t("acc.login")}</a></p>`; return; }
+    box.innerHTML = `<span class="spinner"></span>`;
+    try { orders = await cloud.myOrders(); }
+    catch (err) { box.innerHTML = `<p class="small">${t("common.error")}: ${esc(authError(err))}</p>`; return; }
+  } else orders = store.get("orders", []);
   box.innerHTML = orders.length ? orders.slice(0, 10).map(ticketHtml).join("") : `<p class="muted">—</p>`;
   orders.slice(0, 10).forEach(o => { const el = box.querySelector("#qr-" + CSS.escape(o.id)); if (el) drawQr(el, qrPayload(o), 110); });
 }
 
 document.addEventListener("langchange", () => { renderCart(); renderOrders(); });
+document.addEventListener("cloudplaces", renderCart); // admin o'zgartirgan narxlar
 renderCart();
-renderOrders();
+cloud.onChange(() => { renderCart(); renderOrders(); });

@@ -101,7 +101,7 @@ Return JSON: {"ranking":[{"id":"<id>","why":"<one short sentence in ${langName} 
 document.getElementById("aiRankBtn").addEventListener("click", aiRank);
 
 function renderPlaces() {
-  const rank = currentRank();
+  const rank = currentRank().filter(r => placeById(r.id)); // admin o'chirgan joylarni tashlab ketish
   document.getElementById("places").innerHTML = rank.map((r, i) => {
     const p = placeById(r.id);
     const idx = state.selected.indexOf(p.id);
@@ -240,4 +240,7 @@ Give 5 short practical tips (bullet points starting with "• ") in ${langName}:
 });
 
 document.addEventListener("langchange", () => go(state.step));
+document.addEventListener("cloudplaces", () => { // admin narx/faollikni o'zgartirgan bo'lsa
+  state.selected = state.selected.filter(id => placeById(id)); save(); go(state.step);
+});
 go(state.step || 1);
