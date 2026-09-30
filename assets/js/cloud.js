@@ -48,10 +48,24 @@ const cloud = {
   /* Admin ekanini bazadan so'rab aniqlaymiz: barcha buyurtmalarni o'qishga faqat firestore.rules'dagi
      admin ruxsat oladi. Shu tufayli admin emaili sayt kodida (ochiq repozitoriyda) saqlanmaydi. */
   async _probeAdmin() {
+    this.adminDiag = {};
+    try {
+      const tr = await this._auth.currentUser.getIdTokenResult();
+      this.adminDiag.emailVerified = tr.claims.email_verified === true;
+      this.adminDiag.provider = tr.signInProvider;
+    } catch (e) { /* ignore */ }
     try {
       await FB.getDocs(FB.query(FB.collection(this._db, "orders"), FB.limit(1)));
       return true;
-    } catch (e) { return false; }
+    } catch (e) { this.adminDiag.error = `${e.code || ""} ${e.message || ""}`.trim(); return false; }
+  },
+  /* Tokenni yangilab admin huquqini qayta tekshirish (qoidalar kirgandan keyin o'zgargan bo'lsa) */
+  async recheckAdmin() {
+    if (!this._auth.currentUser) return false;
+    await this._auth.currentUser.getIdToken(true);
+    this.admin = await this._probeAdmin();
+    this._finish(this.user);
+    return this.admin;
   },
 
   /* ---------- Auth ---------- */

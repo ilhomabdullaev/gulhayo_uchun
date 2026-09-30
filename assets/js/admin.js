@@ -11,6 +11,7 @@ function itemsText(o) { return o.items.map(i => `${L(placeById(i.id)?.name) || i
 /* ---------- Kirish nazorati ---------- */
 cloud.onChange(user => {
   const gate = $("gate");
+  gate.classList.remove("hidden");
   if (!cloud.enabled) {
     gate.innerHTML = `<h3>Firebase hali ulanmagan</h3>
       <p>Admin panel ishlashi uchun <code>assets/js/firebase-config.js</code> fayliga Firebase sozlamasini qo'yish kerak.
@@ -23,9 +24,20 @@ cloud.onChange(user => {
     return;
   }
   if (!cloud.isAdmin()) {
+    const d = cloud.adminDiag || {};
     gate.innerHTML = `<h3>⛔ Ruxsat yo'q</h3><p class="small">Siz <b>${esc(user.email)}</b> sifatida kirdingiz. Bu email admin emas.
       Admin Firebase Console → Firestore → Rules ichida belgilanadi va email tasdiqlangan bo'lishi kerak
-      (eng osoni — «Google orqali kirish»).</p>`;
+      (eng osoni — «Google orqali kirish»).</p>
+      <div class="notice small"><b>Tashxis:</b><br>
+        Kirish usuli: ${esc(d.provider || "—")}<br>
+        Email tasdiqlangan: ${d.emailVerified === true ? "✅ ha" : d.emailVerified === false ? "❌ yo'q — «Chiqish», so'ng «Google orqali kirish»" : "—"}<br>
+        Firestore javobi: <code>${esc(d.error || "—")}</code></div>
+      <button class="btn" id="recheck" style="margin-top:12px">🔄 Qayta tekshirish</button>`;
+    $("recheck").onclick = async () => {
+      $("recheck").disabled = true;
+      const okAdmin = await cloud.recheckAdmin().catch(() => false);
+      if (!okAdmin) toast("Hali ham admin emas — tashxisga qarang", "error");
+    };
     $("panel").classList.add("hidden");
     return;
   }
