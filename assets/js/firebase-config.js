@@ -21,5 +21,5 @@ window.FIREBASE_CONFIG = {
 };
 */
 
-/* Admin panelga kira oladigan email(lar). firestore.rules faylidagi ro'yxat bilan BIR XIL bo'lishi shart. */
-window.ADMIN_EMAILS = [];
+/* Admin kim ekanligi sayt kodida emas, Firebase Console → Firestore → Rules ichida belgilanadi
+   (firestore.rules → isAdmin). Sayt adminni bazadan o'zi aniqlaydi, shuning uchun email bu yerda yozilmaydi. */

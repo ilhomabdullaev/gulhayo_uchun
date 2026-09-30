@@ -23,8 +23,9 @@ cloud.onChange(user => {
     return;
   }
   if (!cloud.isAdmin()) {
-    gate.innerHTML = `<h3>⛔ Ruxsat yo'q</h3><p class="small">Siz <b>${esc(user.email)}</b> sifatida kirdingiz. Bu email admin ro'yxatida yo'q
-      (<code>firebase-config.js</code> → ADMIN_EMAILS va <code>firestore.rules</code>).</p>`;
+    gate.innerHTML = `<h3>⛔ Ruxsat yo'q</h3><p class="small">Siz <b>${esc(user.email)}</b> sifatida kirdingiz. Bu email admin emas.
+      Admin Firebase Console → Firestore → Rules ichida belgilanadi va email tasdiqlangan bo'lishi kerak
+      (eng osoni — «Google orqali kirish»).</p>`;
     $("panel").classList.add("hidden");
     return;
   }

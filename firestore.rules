@@ -1,13 +1,15 @@
 rules_version = '2';
 // Tourist.uz — Firestore xavfsizlik qoidalari.
 // Firebase Console → Firestore Database → Rules bo'limiga shu matnni to'liq nusxalab, "Publish" bosing.
-// ADMIN_EMAIL@example.com o'rniga admin email(lar)ini yozing (firebase-config.js → ADMIN_EMAILS bilan bir xil).
+// admin_email@example.com o'rniga admin email(lar)ini yozing. Bir nechta bo'lsa: ['a@gmail.com', 'b@gmail.com'].
+// Admin email TASDIQLANGAN bo'lishi shart — eng osoni admin saytga "Google orqali kirish" bilan kiradi.
 service cloud.firestore {
   match /databases/{database}/documents {
 
     function signedIn() { return request.auth != null; }
     function isAdmin() {
       return signedIn() && request.auth.token.email != null
+        && request.auth.token.email_verified == true   // begona odam admin emailini egallab ololmasligi uchun
         && request.auth.token.email.lower() in ['admin_email@example.com'];
     }
 

@@ -10,7 +10,7 @@ const STATUS_LABELS = {
 function statusLabel(s) { return STATUS_LABELS[s] ? L(STATUS_LABELS[s]) : s; }
 
 const cloud = {
-  enabled: false, ready: false, user: null, error: null,
+  enabled: false, ready: false, user: null, admin: false, error: null,
   _cbs: [], _app: null, _auth: null, _db: null,
 
   init() {
@@ -33,6 +33,7 @@ const cloud = {
     FB.onAuthStateChanged(this._auth, async u => {
       this.user = u ? { uid: u.uid, email: u.email || "", name: u.displayName || (u.email || "").split("@")[0] } : null;
       if (u) this._touchUser().catch(e => console.warn("user profile:", e.message));
+      this.admin = u ? await this._probeAdmin() : false;
       this._finish(this.user);
     });
   },
@@ -43,8 +44,14 @@ const cloud = {
   },
   /* cb darhol (tayyor bo'lsa) va har bir kirish/chiqishda chaqiriladi */
   onChange(cb) { this._cbs.push(cb); if (this.ready) cb(this.user); },
-  isAdmin() {
-    return !!this.user && (window.ADMIN_EMAILS || []).map(e => e.toLowerCase()).includes(this.user.email.toLowerCase());
+  isAdmin() { return !!this.user && this.admin; },
+  /* Admin ekanini bazadan so'rab aniqlaymiz: barcha buyurtmalarni o'qishga faqat firestore.rules'dagi
+     admin ruxsat oladi. Shu tufayli admin emaili sayt kodida (ochiq repozitoriyda) saqlanmaydi. */
+  async _probeAdmin() {
+    try {
+      await FB.getDocs(FB.query(FB.collection(this._db, "orders"), FB.limit(1)));
+      return true;
+    } catch (e) { return false; }
   },
 
   /* ---------- Auth ---------- */

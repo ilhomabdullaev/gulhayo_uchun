@@ -54,8 +54,8 @@ Ulangandan keyin quyidagi imkoniyatlar ishlaydi:
    - **Rules** yorlig'iga repozitoriydagi `firestore.rules` faylini to'liq nusxalang.
    - `admin_email@example.com` o'rniga admin emailini yozing va **Publish** tugmasini bosing.
 4. **⚙️ Project settings → Your apps → Web (`</>`)** bo'limida ilovani ro'yxatdan o'tkazing. Chiqqan `firebaseConfig` qiymatlarini `assets/js/firebase-config.js` fayliga qo'ying.
-5. Shu faylda `ADMIN_EMAILS` ro'yxatiga admin emailini yozing. U `firestore.rules` faylidagi email bilan bir xil bo'lishi shart.
-6. Admin o'sha email bilan saytda ro'yxatdan o'tadi. Shundan keyin menyuda **Admin** tugmasi paydo bo'ladi.
+5. Admin o'sha email bilan saytga **«Google orqali kirish»** tugmasi orqali kiradi. Admin emaili tasdiqlangan bo'lishi shart, Google orqali kirganda u avtomatik tasdiqlanadi. Shundan keyin menyuda **Admin** tugmasi paydo bo'ladi.
+   Admin emaili sayt kodida saqlanmaydi, u faqat Firebase'dagi qoidalarda turadi.
 
 > `firebaseConfig` qiymatlari maxfiy emas, ular baribir brauzerga yuboriladi. Haqiqiy himoya `firestore.rules` qoidalarida:
 > foydalanuvchi faqat o'z buyurtmalarini ko'radi, holat va narxlarni faqat admin o'zgartiradi.
@@ -96,7 +96,7 @@ login.html        Kirish / ro'yxatdan o'tish (Firebase Auth)
 admin.html        Admin panel
 firestore.rules   Firestore xavfsizlik qoidalari
 assets/js/cloud.js            Firebase qatlami (auth, buyurtmalar, narxlar)
-assets/js/firebase-config.js  Firebase sozlamasi va admin email(lar)
+assets/js/firebase-config.js  Firebase sozlamasi
 assets/js/data.js Obidalar, hududlar, davlatlar, transport (tahrirlash oson)
 assets/js/i18n.js Interfeys tarjimalari (uz / en / ru)
 assets/js/common.js  Umumiy funksiyalar: Gemini klienti, geo, savat
