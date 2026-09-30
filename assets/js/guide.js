@@ -90,24 +90,31 @@ document.getElementById("gSimBtn").addEventListener("click", () => {
 
 /* ---------- Hikoya matni ---------- */
 async function narration(p, lang) {
-  const cacheKey = `narr.${p.id}.${lang}`;
+  const local = (typeof NARR !== "undefined" && NARR[p.id]) || null;
+  const localText = local ? (local[lang] || local.en) : `${p.name[lang] || p.name.en}.\n\n${p.desc[lang] || p.desc.en}`;
+  const offline = { text: localText, src: local && local[lang] ? "Tourist.uz" : "Tourist.uz (EN)" };
+  if (!gemini.enabled()) return offline;
+
+  const cacheKey = `narr.v2.${p.id}.${lang}`; // v2: uzun matnlar (eski qisqa kesh ishlatilmaydi)
   const cached = store.get(cacheKey);
-  if (cached) return { text: cached, src: "AI (cache)" };
-  if (!gemini.enabled()) {
-    const base = p.desc[lang] || p.desc.en;
-    return { text: `${p.name[lang] || p.name.en}.\n\n${base}`, src: "offline" };
+  if (cached) return { text: cached, src: "Gemini AI (cache)" };
+  try {
+    const text = await gemini.generate(
+      `You are a warm, knowledgeable local tour guide standing with a tourist at "${p.name.en}" in ${regionById(p.region).name.en}, Uzbekistan.
+Verified background (use these facts as your main source; do not contradict them):
+"""${local ? local.en : p.desc.en}"""
+Write a rich spoken audio-tour narration of about 400–500 words in the language with code "${lang}" (${GUIDE_LANGS[lang].name}).
+Structure: a welcoming opening; the history (who built it, when and why); 3 architectural or artistic details the tourist can look at right now; one legend clearly marked as a legend; the place's significance today; one practical or etiquette tip; a warm closing sentence.
+Only state well-established facts — if unsure about a detail, leave it out. Plain text only, no markdown, no lists, short paragraphs — it will be read aloud.`,
+      { temperature: 0.5 }
+    );
+    const clean = text.replace(/[*#_`]/g, "").trim();
+    store.set(cacheKey, clean);
+    return { text: clean, src: "Gemini AI" };
+  } catch (e) {
+    console.warn("Gemini:", e.message);
+    return offline; // AI ishlamasa ham batafsil matn o'qiladi
   }
-  const text = await gemini.generate(
-    `You are a warm, knowledgeable local tour guide standing with a tourist at "${p.name.en}" in ${regionById(p.region).name.en}, Uzbekistan.
-Background: ${p.desc.en}
-Write a spoken audio-tour narration of about 180–230 words in the language with code "${lang}" (${GUIDE_LANGS[lang].name}).
-Include: a welcoming first sentence, key history (dates, builders), 2 architectural details to look at right now, one legend or interesting fact, and one respectful etiquette tip. Only state well-established facts.
-Plain text only, no markdown, no lists, short paragraphs — it will be read aloud.`,
-    { temperature: 0.6 }
-  );
-  const clean = text.replace(/[*#_`]/g, "").trim();
-  store.set(cacheKey, clean);
-  return { text: clean, src: "Gemini AI" };
 }
 
 async function openPlace(p, autoplay) {
