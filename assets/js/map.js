@@ -16,7 +16,37 @@ function makeMap(elId, center, zoom = 14) {
     maxZoom: 19,
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>'
   }).addTo(map);
+  addFullscreenControl(map);
   return map;
+}
+
+/* Butun ekran rejimi: CSS orqali (iPhone Safari ham qo'llab-quvvatlaydi). Chiqish: ✕ tugmasi yoki Esc. */
+function addFullscreenControl(map) {
+  const Ctl = LF.Control.extend({
+    options: { position: "topright" },
+    onAdd() {
+      const btn = LF.DomUtil.create("a", "leaflet-bar map-fs-btn");
+      btn.href = "#"; btn.role = "button"; btn.title = "Fullscreen"; btn.innerHTML = "⛶";
+      LF.DomEvent.disableClickPropagation(btn);
+      LF.DomEvent.on(btn, "click", e => { LF.DomEvent.preventDefault(e); toggleMapFullscreen(map, btn); });
+      return btn;
+    }
+  });
+  map.addControl(new Ctl());
+}
+function toggleMapFullscreen(map, btn, force) {
+  const el = map.getContainer();
+  const on = force !== undefined ? force : !el.classList.contains("map-full");
+  el.classList.toggle("map-full", on);
+  document.body.classList.toggle("map-full-open", on);
+  btn.innerHTML = on ? "✕" : "⛶";
+  btn.title = on ? "Exit fullscreen" : "Fullscreen";
+  map.scrollWheelZoom[on ? "enable" : "disable"]();
+  setTimeout(() => map.invalidateSize(), 50);
+  if (on) {
+    const onKey = e => { if (e.key === "Escape") { toggleMapFullscreen(map, btn, false); } };
+    map._fsKey = onKey; document.addEventListener("keydown", onKey);
+  } else if (map._fsKey) { document.removeEventListener("keydown", map._fsKey); map._fsKey = null; }
 }
 
 /* Rangli raqamli/belgili pin (rasm fayllarisiz) */

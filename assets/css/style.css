@@ -227,3 +227,7 @@ footer#foot { border-top: 1px solid var(--border); padding: 20px 0; color: var(-
 .leaflet-popup-content { font-family: inherit; font-size: .9rem; }
 .leaflet-popup-content b { display: block; margin-bottom: 6px; }
 .map-hint { font-size: .8rem; color: var(--muted); margin-top: 6px; }
+.map-fs-btn { width: 34px; height: 34px; line-height: 34px !important; text-align: center; font-size: 20px; background: #fff; color: #1c2433 !important; text-decoration: none; cursor: pointer; }
+.map.map-full { position: fixed !important; inset: 0; width: 100vw; height: 100vh; height: 100dvh; border-radius: 0; border: 0; z-index: 2000; }
+body.map-full-open { overflow: hidden; }
+body.map-full-open #nav { z-index: 1; }
