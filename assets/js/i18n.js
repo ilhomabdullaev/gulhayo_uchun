@@ -58,7 +58,7 @@ const I18N = {
     "guide.simulate": "Demo: obida oldida turibman", "guide.nearest": "Eng yaqin obidalar", "guide.inRange": "Siz obida yonidasiz!",
     "guide.listen": "Tinglash", "guide.stop": "To'xtatish", "guide.gen": "AI matn tayyorlamoqda…",
     "guide.gpsDenied": "GPS ruxsati berilmadi. Demo tugmasidan foydalaning.", "guide.gpsWait": "Joylashuv aniqlanmoqda…",
-    "guide.you": "Siz shu yerdasiz", "guide.noVoice": "Brauzeringizda bu til uchun ovoz topilmadi — matn ko'rsatildi.",
+    "guide.you": "Siz shu yerdasiz", "guide.noVoice": "Bu brauzerda tanlangan til uchun ovoz yo'q, shuning uchun matn ko'rsatildi. O'zbekcha ovoz Microsoft Edge brauzerida bor — saytni Edge'da oching yoki Android'da «Google matnni nutqqa aylantirish» ilovasiga o'zbek tilini o'rnating.", "guide.openEdge": "Edge'da ochish",
     "guide.pick": "Obidani tanlang", "guide.mapHint": "Demo: xaritaning istalgan joyini bossangiz, «joylashuvingiz» o'sha yerga ko'chadi. Obida belgisini bossangiz, hikoya ochiladi.",
 
     "cart.t": "Chiptalar savati", "cart.empty": "Savat bo'sh. Sayohat sahifasidan chipta qo'shing.",
@@ -135,7 +135,7 @@ const I18N = {
     "guide.simulate": "Demo: I'm at the monument", "guide.nearest": "Nearest sights", "guide.inRange": "You are at the monument!",
     "guide.listen": "Listen", "guide.stop": "Stop", "guide.gen": "AI is preparing the text…",
     "guide.gpsDenied": "GPS permission denied. Use the demo button.", "guide.gpsWait": "Detecting location…",
-    "guide.you": "You are here", "guide.noVoice": "No voice for this language in your browser — text shown instead.",
+    "guide.you": "You are here", "guide.noVoice": "This browser has no voice for the selected language, so the text is shown. Uzbek voices are available in Microsoft Edge — open the site in Edge.", "guide.openEdge": "Open in Edge",
     "guide.pick": "Choose a monument", "guide.mapHint": "Demo: tap anywhere on the map to move “your location” there. Tap a monument pin to open its story.",
 
     "cart.t": "Ticket cart", "cart.empty": "Your cart is empty. Add tickets from the Trip page.",
@@ -212,7 +212,7 @@ const I18N = {
     "guide.simulate": "Демо: я у памятника", "guide.nearest": "Ближайшие объекты", "guide.inRange": "Вы у памятника!",
     "guide.listen": "Слушать", "guide.stop": "Стоп", "guide.gen": "AI готовит текст…",
     "guide.gpsDenied": "Доступ к GPS запрещён. Используйте демо-кнопку.", "guide.gpsWait": "Определяем местоположение…",
-    "guide.you": "Вы здесь", "guide.noVoice": "В браузере нет голоса для этого языка — показан текст.",
+    "guide.you": "Вы здесь", "guide.noVoice": "В этом браузере нет голоса для выбранного языка, поэтому показан текст. Узбекские голоса есть в Microsoft Edge — откройте сайт в Edge.", "guide.openEdge": "Открыть в Edge",
     "guide.pick": "Выберите объект", "guide.mapHint": "Демо: нажмите в любом месте карты, чтобы переместить туда «ваше местоположение». Нажмите на метку объекта, чтобы открыть рассказ.",
 
     "cart.t": "Корзина билетов", "cart.empty": "Корзина пуста. Добавьте билеты на странице «Поездка».",

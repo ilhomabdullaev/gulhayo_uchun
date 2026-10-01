@@ -164,11 +164,32 @@ async function openPlace(p, autoplay) {
 function primeSpeech() { // iOS/Chrome: foydalanuvchi bosganda ovozni "uyg'otish"
   try { if ("speechSynthesis" in window) { const u = new SpeechSynthesisUtterance(""); speechSynthesis.speak(u); } } catch (e) { /* ignore */ }
 }
-function findVoice(lang) {
-  if (!("speechSynthesis" in window)) return null;
+/* Brauzer ovozlar ro'yxatini kechikib yuklaydi — tayyor bo'lishini kutamiz (2 soniyagacha) */
+function voicesReady() {
+  return new Promise(res => {
+    if (!("speechSynthesis" in window)) return res([]);
+    const v = speechSynthesis.getVoices();
+    if (v.length) return res(v);
+    const done = () => res(speechSynthesis.getVoices());
+    speechSynthesis.addEventListener("voiceschanged", done, { once: true });
+    setTimeout(done, 2000);
+  });
+}
+async function findVoice(lang) {
   const bcp = GUIDE_LANGS[lang].bcp.toLowerCase();
-  const voices = speechSynthesis.getVoices();
-  return voices.find(v => v.lang.toLowerCase() === bcp) || voices.find(v => v.lang.toLowerCase().startsWith(lang)) || null;
+  const voices = (await voicesReady()).filter(v => {
+    const l = v.lang.toLowerCase().replace("_", "-");
+    return l === bcp || l.startsWith(lang + "-") || l === lang; // uz-UZ, uz-Latn-UZ, uz
+  });
+  // Tabiiy (Natural/Online) ovozlar sifatliroq — ularni afzal ko'ramiz
+  return voices.find(v => /natural|online/i.test(v.name)) || voices[0] || null;
+}
+function showNoVoice(lang) {
+  const box = document.getElementById("gVoiceHelp");
+  const isWin = /Windows/i.test(navigator.userAgent), isEdge = /Edg\//.test(navigator.userAgent);
+  box.innerHTML = `⚠️ ${esc(t("guide.noVoice"))}` +
+    (isWin && !isEdge ? ` <a href="microsoft-edge:${esc(location.href)}">${esc(t("guide.openEdge"))} ↗</a>` : "");
+  box.classList.remove("hidden");
 }
 function stopSpeech() {
   try { speechSynthesis.cancel(); } catch (e) { /* ignore */ }
@@ -176,11 +197,12 @@ function stopSpeech() {
 }
 async function speak(text, lang) {
   stopSpeech();
-  const voice = findVoice(lang);
+  document.getElementById("gVoiceHelp").classList.add("hidden");
+  const voice = await findVoice(lang);
   if ((aiVoice.checked || !voice) && gemini.ttsKey()) { // Gemini ovozi — admin kalit kiritgan bo'lsa
     try { await speakGemini(text); return; } catch (e) { console.warn("Gemini TTS:", e.message); }
   }
-  if (!voice) { toast(t("guide.noVoice")); return; }
+  if (!voice) { showNoVoice(lang); return; }
   // Uzun matnni gaplarga bo'lib o'qish (Chrome ~15 soniyadan keyin to'xtab qolmasligi uchun)
   const parts = text.match(/[^.!?。！？]+[.!?。！？]*/g) || [text];
   parts.forEach(s => {
