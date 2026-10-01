@@ -151,22 +151,28 @@ $("checkForm").addEventListener("submit", async e => {
 
 /* ---------- Obidalar va narxlar ---------- */
 function renderPlaces() {
-  $("placesTable").innerHTML = `<table><thead><tr><th>Obida</th><th>Hudud</th><th>Narx, so'm</th><th>Faol</th><th></th></tr></thead><tbody>
-    ${PLACES_ALL.map(p => `<tr><td><b>${esc(L(p.name))}</b></td><td class="small">${esc(L(regionById(p.region).name))}</td>
-      <td><input type="number" min="0" step="1000" value="${p.price}" data-price="${p.id}" style="width:130px"></td>
+  $("placesTable").innerHTML = `<table><thead><tr><th></th><th>Obida</th><th>Narx, so'm</th><th>Surat havolasi (https://…)</th><th>Faol</th><th></th></tr></thead><tbody>
+    ${PLACES_ALL.map(p => `<tr><td style="width:72px">${placeMedia(p, "thumb")}</td>
+      <td><b>${esc(L(p.name))}</b><br><span class="small muted">${esc(L(regionById(p.region).name))}</span></td>
+      <td><input type="number" min="0" step="1000" value="${p.price}" data-price="${p.id}" style="width:120px"></td>
+      <td><input type="url" placeholder="https://…jpg" value="${esc(p.photo || "")}" data-photo="${p.id}" style="min-width:220px"></td>
       <td><input type="checkbox" data-active="${p.id}" ${p.active !== false ? "checked" : ""} style="width:auto"></td>
-      <td><button class="btn sm" data-save="${p.id}">Saqlash</button></td></tr>`).join("")}</tbody></table>`;
+      <td><button class="btn sm" data-save="${p.id}">Saqlash</button></td></tr>`).join("")}</tbody></table>
+    <p class="small muted" style="margin-top:10px">Surat uchun o'zingiz olgan yoki litsenziyasi ruxsat bergan rasm havolasini kiriting (https bilan boshlanishi shart).
+    Bo'sh qoldirilsa — obida turiga mos naqshli rasm ko'rsatiladi.</p>`;
 }
 $("placesTable").addEventListener("click", async e => {
   const b = e.target.closest("[data-save]"); if (!b) return;
-  const id = b.dataset.save;
-  const price = Math.max(0, parseInt($("placesTable").querySelector(`[data-price="${id}"]`).value) || 0);
-  const active = $("placesTable").querySelector(`[data-active="${id}"]`).checked;
+  const id = b.dataset.save, q = sel => $("placesTable").querySelector(sel);
+  const price = Math.max(0, parseInt(q(`[data-price="${id}"]`).value) || 0);
+  const active = q(`[data-active="${id}"]`).checked;
+  const photo = q(`[data-photo="${id}"]`).value.trim();
+  if (photo && !/^https:\/\//.test(photo)) { toast("Surat havolasi https:// bilan boshlanishi kerak", "error"); return; }
   b.disabled = true;
   try {
-    await cloud.savePlace(id, { price, active });
-    const p = PLACES_ALL.find(x => x.id === id); p.price = price; p.active = active;
-    toast(`✓ ${L(p.name)} saqlandi`, "ok");
+    await cloud.savePlace(id, { price, active, photo });
+    const p = PLACES_ALL.find(x => x.id === id); p.price = price; p.active = active; p.photo = photo;
+    toast(`✓ ${L(p.name)} saqlandi`, "ok"); renderPlaces();
   } catch (err) { toast(authError(err), "error"); }
   b.disabled = false;
 });

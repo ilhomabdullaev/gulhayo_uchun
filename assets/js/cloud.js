@@ -155,6 +155,7 @@ const cloud = {
         const p = PLACES_ALL.find(x => x.id === d.id), o = d.data();
         if (!p) return;
         if (typeof o.price === "number") p.price = o.price;
+        if (typeof o.photo === "string") p.photo = o.photo;
         p.active = o.active !== false;
       });
       if (!window.KEEP_INACTIVE_PLACES) {

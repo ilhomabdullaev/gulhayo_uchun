@@ -48,7 +48,7 @@ function renderRegions() {
   document.getElementById("regions").innerHTML = REGIONS.map(r => {
     const n = PLACES.filter(p => p.region === r.id).length;
     return `<button class="choice ${state.region === r.id ? "sel" : ""}" data-r="${r.id}">
-      <span class="big">${r.emoji}</span><span><b>${esc(L(r.name))}</b><br><span class="small muted">${n} ${t("stats.places")}</span></span></button>`;
+      ${regionBadge(r.id)}<span><b>${esc(L(r.name))}</b><br><span class="small muted">${n} ${t("stats.places")}</span></span></button>`;
   }).join("");
 }
 document.getElementById("regions").addEventListener("click", e => {
@@ -106,12 +106,13 @@ function renderPlaces() {
     const p = placeById(r.id);
     const idx = state.selected.indexOf(p.id);
     return `<div class="card place ${idx >= 0 ? "sel" : ""}" data-p="${p.id}">
+      ${placeMedia(p)}
       ${idx >= 0 ? `<span class="order">${idx + 1}</span>` : ""}
       <div class="meta"><span class="rank">#${i + 1}</span><span class="pill">★ ${p.rating.toFixed(1)}</span>
         <span class="pill accent">${t("plan.i." + p.type) !== "plan.i." + p.type ? t("plan.i." + p.type) : p.type}</span>
         <span class="pill">⏱ ${dur(p.hours * 60)}</span></div>
       <h3>${esc(L(p.name))}</h3>
-      <p class="muted small" style="margin:0">${esc(L(p.desc))}</p>
+      <p class="muted small" style="margin-top:0;margin-bottom:0">${esc(L(p.desc))}</p>
       ${r.why ? `<div class="ai-why">✨ ${esc(r.why)}</div>` : ""}
       <div class="meta" style="margin-top:auto"><b>${money(p.price)}</b>${p.price ? `<span class="small muted">${usd(p.price)}</span>` : ""}</div>
     </div>`;

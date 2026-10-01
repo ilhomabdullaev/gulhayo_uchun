@@ -6,6 +6,8 @@
   <title>Sayohat — Tourist.uz</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧭</text></svg>">
   <link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Philosopher:wght@400;700&display=swap">
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
@@ -17,7 +19,7 @@
 
     <!-- 1-qadam: fuqarolik -->
     <section class="container step" id="step1">
-      <h2>🌍 <span data-i18n="trip.s1"></span></h2>
+      <h2 class="ornament-title"><span data-i18n="trip.s1"></span></h2>
       <p class="muted" data-i18n="trip.s1.h"></p>
       <input id="countrySearch" type="search" placeholder="🔎 Search / Qidirish" style="max-width:360px;margin-bottom:14px">
       <div class="choice-grid" id="countries"></div>
@@ -27,7 +29,7 @@
 
     <!-- 2-qadam: hudud -->
     <section class="container step hidden" id="step2">
-      <h2>📍 <span data-i18n="trip.s2"></span></h2>
+      <h2 class="ornament-title"><span data-i18n="trip.s2"></span></h2>
       <div class="choice-grid" id="regions"></div>
       <div class="row" style="margin-top:20px"><button class="btn ghost" onclick="go(1)">← <span data-i18n="common.back"></span></button></div>
     </section>
@@ -37,7 +39,7 @@
       <div class="container">
         <div class="row" style="justify-content:space-between">
           <div>
-            <h2>⭐ <span data-i18n="trip.s3"></span></h2>
+            <h2 class="ornament-title"><span data-i18n="trip.s3"></span></h2>
             <p class="muted" data-i18n="trip.s3.h"></p>
           </div>
           <button class="btn ghost sm" id="aiRankBtn">✨ <span data-i18n="trip.aiRank"></span></button>
@@ -56,7 +58,7 @@
 
     <!-- 4-qadam: marshrut -->
     <section class="container step hidden" id="step4">
-      <h2>🗺️ <span data-i18n="trip.s4"></span> — <span id="routeRegion"></span></h2>
+      <h2 class="ornament-title"><span data-i18n="trip.s4"></span> — <span id="routeRegion"></span></h2>
       <div class="card flat" style="margin-bottom:16px">
         <div class="row" style="gap:20px">
           <div><label for="startTime" data-i18n="trip.start"></label><input type="time" id="startTime" value="09:00" style="width:130px"></div>
@@ -85,6 +87,7 @@
   <script src="assets/js/data.js"></script>
   <script src="assets/js/i18n.js"></script>
   <script src="assets/js/common.js"></script>
+  <script src="assets/js/art.js"></script>
   <script src="assets/vendor/firebase/firebase.bundle.js"></script>
   <script src="assets/js/firebase-config.js"></script>
   <script src="assets/js/cloud.js"></script>
