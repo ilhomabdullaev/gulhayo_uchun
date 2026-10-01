@@ -29,7 +29,7 @@ Uni bir marta yoqish kerak:
 
 1. Firebase Console → **AI services → AI Logic → Get started** bo'limini oching.
 2. **Gemini Developer API** ni tanlang, u bepul tarifda ham ishlaydi, va **Enable API** tugmasini bosing.
-3. Tayyor. Saytdagi menyuda `AI` belgisi yashil bo'ladi. **Sozlamalar → Ulanishni tekshirish** tugmasi bilan tekshirib ko'rish mumkin.
+3. Tayyor. Saytdagi menyuda `AI` belgisi yashil bo'ladi. **Admin → 🤖 AI sozlamalari → Tekshirish** tugmasi bilan tekshirib ko'rish mumkin.
 
 **AI sozlamalari admin panelda** (**Admin → 🤖 AI sozlamalari**) turadi va butun tizimga amal qiladi. Foydalanuvchilarning Sozlamalar sahifasida kalit so'ralmaydi.
 - **Firebase AI Logic** rejimi (standart, tavsiya etiladi): kalit kerak emas.
@@ -96,7 +96,7 @@ trip.html         Sayohat ustasi (fuqarolik → hudud → joylar → marshrut)
 planner.html      AI Sayohat Planner
 guide.html        GPS audio-gid
 cart.html         Chiptalar savati va QR
-settings.html     Gemini API kaliti
+settings.html     (eski havola — admin.html ga yo'naltiradi)
 login.html        Kirish / ro'yxatdan o'tish (Firebase Auth)
 admin.html        Admin panel
 firestore.rules   Firestore xavfsizlik qoidalari

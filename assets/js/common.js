@@ -220,7 +220,7 @@ function parseJsonLoose(text) {
 function renderNav(active) {
   const links = [
     ["index.html", "nav.home", "home"], ["trip.html", "nav.trip", "trip"], ["planner.html", "nav.planner", "planner"],
-    ["guide.html", "nav.guide", "guide"], ["cart.html", "nav.cart", "cart"], ["settings.html", "nav.settings", "settings"]
+    ["guide.html", "nav.guide", "guide"], ["cart.html", "nav.cart", "cart"]
   ];
   const header = document.getElementById("nav");
   if (!header) return;
