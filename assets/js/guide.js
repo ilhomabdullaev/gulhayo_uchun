@@ -143,6 +143,9 @@ async function openPlace(p, autoplay) {
   const lang = guideLang();
   document.getElementById("gNow").classList.remove("hidden");
   document.getElementById("gTitle").textContent = p.name[lang] || L(p.name);
+  const ph = document.getElementById("gPhoto");
+  if (p.photo) { ph.src = p.photo; ph.alt = L(p.name); ph.title = p.photoCredit ? "📷 " + p.photoCredit : ""; ph.classList.remove("hidden"); }
+  else ph.classList.add("hidden");
   const txt = document.getElementById("gText");
   txt.innerHTML = `<span class="spinner"></span> ${t("guide.gen")}`;
   txt.dir = ["ar", "fa"].includes(lang) ? "rtl" : "ltr";

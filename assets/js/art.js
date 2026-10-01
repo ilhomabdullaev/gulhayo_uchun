@@ -29,8 +29,9 @@ function artSvg(inner, size = 64) {
 /* Obida kartasi uchun ravoqli rasm maydoni: admin surat URL'ini kiritgan bo'lsa — surat, aks holda tur rasmi */
 function placeMedia(p, extraClass = "") {
   const a = TYPE_ART[p.type] || TYPE_ART.history;
-  const photo = p.photo && /^https:\/\//.test(p.photo)
-    ? `<img src="${esc(p.photo)}" alt="${esc(L(p.name))}" loading="lazy" onerror="this.remove()">` : "";
+  const photo = p.photo && /^(https:\/\/|assets\/img\/)/.test(p.photo)
+    ? `<img src="${esc(p.photo)}" alt="${esc(L(p.name))}" loading="lazy" onerror="this.remove()">` +
+      (p.photoCredit ? `<span class="pm-credit" title="${esc(p.photoCredit)}">📷 ${esc(p.photoCredit.split(" · ")[0])}</span>` : "") : "";
   return `<div class="place-media ${extraClass}" style="--g1:${a.g[0]};--g2:${a.g[1]}">
     <span class="pm-pattern"></span>${artSvg(a.svg, 56)}${photo}</div>`;
 }

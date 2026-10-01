@@ -329,3 +329,27 @@ footer#foot::before { content: ""; position: absolute; top: 0; left: 0; right: 0
 .place-media.thumb { width: 64px; height: 48px; margin: 0; border-radius: 10px 10px 4px 4px; }
 .place-media.thumb svg { width: 28px; height: 28px; }
 @media (max-width: 700px) { .skyline-caption { position: static; display: block; text-align: right; padding: 4px 16px 0; } }
+
+/* ---------- Bosh sahifa: Registonning haqiqiy surati ---------- */
+.hero.hero-photo { min-height: min(78vh, 640px); display: flex; align-items: center; padding: 72px 0 96px; color: #fff;
+  background: linear-gradient(90deg, rgba(9, 18, 44, .86) 0%, rgba(9, 18, 44, .55) 45%, rgba(9, 18, 44, .05) 80%),
+              url("../img/registan-day.jpg") center 35% / cover no-repeat; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .hero.hero-photo {
+  background: linear-gradient(90deg, rgba(5, 10, 26, .9) 0%, rgba(5, 10, 26, .6) 45%, rgba(5, 10, 26, .1) 80%),
+              url("../img/registan-night.jpg") center 40% / cover no-repeat; } }
+.hero.hero-photo h1 { color: #fff; text-shadow: 0 2px 18px rgba(0,0,0,.35); }
+.hero.hero-photo p.lead { color: rgba(255,255,255,.88); }
+.hero.hero-photo .stats b { color: #f2c14e; } .hero.hero-photo .stats .muted { color: rgba(255,255,255,.8); }
+.hero.hero-photo .btn.ghost { color: #fff; border-color: rgba(255,255,255,.55); background: rgba(255,255,255,.08); backdrop-filter: blur(4px); }
+.hero.hero-photo .btn:not(.ghost) { background: var(--gold); color: #1b2236; }
+.hero.hero-photo .pill.gold { background: rgba(242,193,78,.2); color: #f6d27a; }
+.hero.hero-photo::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 12px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='12' viewBox='0 0 24 12'%3E%3Crect width='24' height='12' fill='%231d3f8f'/%3E%3Cpath d='M12 1l5 5-5 5-5-5z' fill='%23128c8f'/%3E%3Ccircle cx='12' cy='6' r='1.6' fill='%23f2c14e'/%3E%3C/svg%3E") repeat-x; background-size: 24px 12px; }
+.hero-credit { position: absolute; right: 16px; bottom: 20px; font-size: .74rem; color: rgba(255,255,255,.85); text-shadow: 0 1px 4px rgba(0,0,0,.6); }
+@media (max-width: 700px) {
+  .hero.hero-photo { background-position: 62% center; padding-bottom: 80px; }
+  .hero.hero-photo { background-image: linear-gradient(180deg, rgba(9,18,44,.55), rgba(9,18,44,.85)), url("../img/registan-day.jpg"); }
+}
+.pm-credit { position: absolute; right: 6px; bottom: 4px; font-size: .62rem; color: #fff; background: rgba(0,0,0,.45); padding: 1px 6px; border-radius: 6px; z-index: 1; }
+.guide-photo { width: 100%; max-height: 240px; object-fit: cover; border-radius: 12px; margin-bottom: 12px; display: block; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .cr-day { display: none; } }

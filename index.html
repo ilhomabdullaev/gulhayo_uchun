@@ -13,8 +13,7 @@
 <body>
   <header id="nav"></header>
   <main>
-    <section class="hero">
-      <div class="girih girih-layer"></div>
+    <section class="hero hero-photo">
       <div class="container">
         <span class="pill gold" data-i18n="badge.demo"></span>
         <h1 data-i18n="hero.title"></h1>
@@ -29,7 +28,7 @@
           <div><b id="stLangs">0</b><span class="muted" data-i18n="stats.langs"></span></div>
         </div>
       </div>
-      <div class="skyline-wrap"><div id="skyline"></div><div class="skyline-ground"></div><span class="skyline-caption" data-i18n="hero.skyCap"></span></div>
+      <div class="hero-credit"><span data-i18n="hero.skyCap"></span><span class="cr-day"> · 📷 Bernard Gagnon · CC BY-SA · Wikimedia Commons</span></div>
     </section>
 
     <section class="section">
@@ -65,7 +64,6 @@
     document.getElementById("stPlaces").textContent = PLACES.length;
     document.getElementById("stRegions").textContent = REGIONS.length;
     document.getElementById("stLangs").textContent = Object.keys(GUIDE_LANGS).length;
-    document.getElementById("skyline").innerHTML = registanSkyline();
   </script>
 </body>
 </html>

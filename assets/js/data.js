@@ -16,6 +16,7 @@ const REGIONS = [
 const PLACES = [
   // ---------- SAMARQAND ----------
   { id: "registan", region: "samarkand", type: "history", rating: 5.0, price: 65000, hours: 1.5, lat: 39.6547, lon: 66.9758,
+    photo: "assets/img/places/registan.jpg", photoCredit: "Bernard Gagnon · CC BY-SA · Wikimedia Commons",
     name: { uz: "Registon ansambli", en: "Registan Square", ru: "Площадь Регистан" },
     desc: { uz: "Ulug'bek, Sherdor va Tillakori madrasalaridan iborat XV–XVII asrlar me'moriy durdonasi, Samarqandning ramzi.",
             en: "The heart of Samarkand: three grand madrasahs — Ulugh Beg, Sher-Dor and Tilya-Kori — built in the 15th–17th centuries.",
@@ -26,6 +27,7 @@ const PLACES = [
             en: "An avenue of mausoleums from the 11th–19th centuries, famous for its stunning turquoise tilework.",
             ru: "Улица мавзолеев XI–XIX веков, знаменитая бирюзовой изразцовой облицовкой." } },
   { id: "guramir", region: "samarkand", type: "history", rating: 4.9, price: 50000, hours: 0.75, lat: 39.6485, lon: 66.9690,
+    photo: "assets/img/places/guramir.jpg", photoCredit: "",
     name: { uz: "Go'ri Amir maqbarasi", en: "Gur-e-Amir Mausoleum", ru: "Мавзолей Гур-Эмир" },
     desc: { uz: "Amir Temur va temuriylar sulolasi dafn etilgan maqbara; qovurg'ali ko'k gumbazi bilan mashhur.",
             en: "The resting place of Amir Timur and his dynasty, crowned by a ribbed azure dome.",
