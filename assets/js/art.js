@@ -41,23 +41,52 @@ function regionBadge(id, size = 44) {
   return `<span class="region-badge" style="--g1:${g[0]};--g2:${g[1]};width:${size}px;height:${size}px">${artSvg(r.svg, size * 0.62)}</span>`;
 }
 
-/* Registon ansambli silueti: Ulug'bek (chap), Tillakori (o'rta), Sherdor (o'ng) */
+/* Registon ansambli silueti: Ulug'bek (chap), Tillakori (o'rta), Sherdor (o'ng). viewBox 1200×320, yer y=310 */
 function registanSkyline() {
-  const minaret = x => `<path class="sk-2" d="M${x} 300V70h22v230z"/><path class="sk-2" d="M${x - 3} 70h28l-4-10h-20z"/><path class="sk-dome" d="M${x + 1} 60q10-22 20 0z"/>`;
-  const portal = (x, w) => `<rect class="sk-1" x="${x}" y="90" width="${w}" height="210"/>
-    <rect class="sk-band" x="${x + 8}" y="100" width="${w - 16}" height="6"/>
-    <path class="sk-glow" d="M${x + 24} 300V180q${(w - 48) / 2} -60 ${w - 48} 0V300z"/>`;
-  const ribDome = (x, w, y) => `<rect class="sk-2" x="${x}" y="${y}" width="${w}" height="34"/>
-    <path class="sk-dome" d="M${x} ${y}q${w / 2} -${w * 1.15} ${w} 0z"/>
-    <path class="sk-rib" d="M${x + w / 2} ${y - w * 0.57}V${y}M${x + w * 0.28} ${y - w * 0.4}l${w * 0.08} ${w * 0.4}M${x + w * 0.72} ${y - w * 0.4}l-${w * 0.08} ${w * 0.4}"/>`;
-  return `<svg class="skyline" viewBox="0 0 1200 300" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
-    <circle class="sk-sun" cx="440" cy="150" r="34"/>
+  const G = 310;
+  // Minora: yuqoriga torayadi, ayvoncha (sharafa), fonar va gumbazcha
+  const minaret = (x, top) => `
+    <path class="sk-2" d="M${x} ${G}L${x + 26} ${G}L${x + 23} ${top + 30}L${x + 3} ${top + 30}Z"/>
+    <rect class="sk-band" x="${x + 4}" y="${top + 70}" width="18" height="4"/><rect class="sk-band" x="${x + 4}" y="${top + 130}" width="19" height="4"/>
+    <rect class="sk-1" x="${x - 3}" y="${top + 22}" width="32" height="9"/>
+    <rect class="sk-2" x="${x + 4}" y="${top + 6}" width="18" height="17"/>
+    <path class="sk-dome" d="M${x + 2} ${top + 7}Q${x + 13} ${top - 16} ${x + 24} ${top + 7}Z"/>`;
+  // Uchli (sharqona) ravoq
+  const arch = (ax, aw, sy, cls) => `<path class="${cls}" d="M${ax} ${G}V${sy}Q${ax} ${sy - aw * 0.5} ${ax + aw / 2} ${sy - aw * 0.8}Q${ax + aw} ${sy - aw * 0.5} ${ax + aw} ${sy}V${G}Z"/>`;
+  // Peshtoq: ramka, koshin belbog', ichki ravoq, guldastalar
+  const portal = (x, w, top, suns = false) => {
+    const aw = w * 0.56, ax = x + (w - aw) / 2, sy = top + (G - top) * 0.42;
+    return `<rect class="sk-1" x="${x}" y="${top}" width="${w}" height="${G - top}"/>
+      <rect class="sk-band" x="${x + 7}" y="${top + 8}" width="${w - 14}" height="4"/>
+      <rect class="sk-band" x="${x + 7}" y="${top + 8}" width="4" height="${G - top - 8}"/><rect class="sk-band" x="${x + w - 11}" y="${top + 8}" width="4" height="${G - top - 8}"/>
+      ${arch(ax - 6, aw + 12, sy, "sk-frame")}${arch(ax, aw, sy, "sk-glow")}
+      <rect class="sk-1" x="${x - 6}" y="${top - 16}" width="12" height="16"/><path class="sk-dome" d="M${x - 7} ${top - 15}Q${x} ${top - 30} ${x + 7} ${top - 15}Z"/>
+      <rect class="sk-1" x="${x + w - 6}" y="${top - 16}" width="12" height="16"/><path class="sk-dome" d="M${x + w - 7} ${top - 15}Q${x + w} ${top - 30} ${x + w + 7} ${top - 15}Z"/>
+      ${suns ? `<circle class="sk-glow" cx="${ax - 4}" cy="${sy - aw * 0.55}" r="9"/><circle class="sk-glow" cx="${ax + aw + 4}" cy="${sy - aw * 0.55}" r="9"/>` : ""}`;
+  };
+  // Qanot devor: ikki qator ravoqli tokchalar
+  const wing = (x, w, top) => {
+    let n = "";
+    for (let cx = x + 14; cx + 18 <= x + w - 10; cx += 30) {
+      n += arch(cx, 18, top + 30, "sk-niche").replace(`V${G}Z`, `V${top + 50}Z`).replace(`M${cx} ${G}`, `M${cx} ${top + 50}`);
+      n += arch(cx, 18, top + 66, "sk-niche").replace(`V${G}Z`, `V${top + 86}Z`).replace(`M${cx} ${G}`, `M${cx} ${top + 86}`);
+    }
+    return `<rect class="sk-2" x="${x}" y="${top}" width="${w}" height="${G - top}"/>${n}`;
+  };
+  // Qovurg'ali gumbaz baraban ustida
+  const dome = (cx, r, y) => `<rect class="sk-2" x="${cx - r}" y="${y}" width="${2 * r}" height="28"/>
+    <rect class="sk-band" x="${cx - r}" y="${y + 4}" width="${2 * r}" height="3"/>
+    <path class="sk-dome" d="M${cx - r} ${y}Q${cx - r} ${y - r * 1.25} ${cx} ${y - r * 1.5}Q${cx + r} ${y - r * 1.25} ${cx + r} ${y}Z"/>
+    <path class="sk-rib" d="M${cx} ${y - r * 1.5}V${y}M${cx - r * 0.5} ${y - r * 1.05}Q${cx - r * 0.45} ${y - r * 0.5} ${cx - r * 0.42} ${y}M${cx + r * 0.5} ${y - r * 1.05}Q${cx + r * 0.45} ${y - r * 0.5} ${cx + r * 0.42} ${y}"/>
+    <path class="sk-rib" d="M${cx} ${y - r * 1.5}v-10"/>`;
+  return `<svg class="skyline" viewBox="0 0 1200 320" preserveAspectRatio="xMidYMax meet" role="img" aria-label="Registon ansambli, Samarqand">
+    <circle class="sk-sun" cx="452" cy="118" r="30"/>
+    <!-- Tillakori (orqaroqda) -->
+    ${wing(480, 240, 215)}${dome(662, 38, 178)}${portal(545, 110, 122)}
     <!-- Ulug'bek madrasasi -->
-    <rect class="sk-2" x="100" y="170" width="300" height="130"/>${portal(190, 120)}${minaret(84)}${minaret(394)}
-    <!-- Tillakori madrasasi -->
-    <rect class="sk-2" x="470" y="190" width="260" height="110"/>${ribDome(648, 64, 160)}${portal(540, 110)}
+    ${wing(110, 310, 200)}${portal(205, 120, 92)}${minaret(86, 58)}${minaret(418, 58)}
     <!-- Sherdor madrasasi -->
-    <rect class="sk-2" x="800" y="170" width="300" height="130"/>${ribDome(822, 56, 150)}${ribDome(1022, 56, 150)}${portal(890, 120)}${minaret(784)}${minaret(1094)}
-    <rect class="sk-1" x="0" y="292" width="1200" height="8"/>
+    ${wing(790, 310, 200)}${dome(838, 30, 172)}${dome(1062, 30, 172)}${portal(885, 120, 92, true)}${minaret(766, 58)}${minaret(1098, 58)}
+    <rect class="sk-1" x="0" y="${G}" width="1200" height="10"/>
   </svg>`;
 }
