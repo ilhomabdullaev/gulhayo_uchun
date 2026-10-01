@@ -34,9 +34,47 @@ function applyI18n(root = document) {
   document.documentElement.lang = getLang();
   root.querySelectorAll("[data-i18n]").forEach(el => { el.textContent = t(el.dataset.i18n); });
   root.querySelectorAll("[data-i18n-ph]").forEach(el => { el.placeholder = t(el.dataset.i18nPh); });
-  const sel = document.getElementById("langSelect");
-  if (sel) sel.value = getLang();
+  renderLangPicker();
 }
+
+/* ---------- Til tanlash: SVG bayroqlar (Windows emoji-bayroqlarni ko'rsatmaydi) ---------- */
+const FLAGS = {
+  uz: `<svg viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="20" fill="#1eb53a"/><rect width="30" height="13.3" fill="#fff"/><rect width="30" height="6.4" fill="#0099b5"/>
+       <rect y="6.4" width="30" height=".6" fill="#ce1126"/><rect y="12.7" width="30" height=".6" fill="#ce1126"/>
+       <circle cx="5.2" cy="3.2" r="2.2" fill="#fff"/><circle cx="6.1" cy="3.2" r="2" fill="#0099b5"/>
+       <g fill="#fff"><circle cx="9.2" cy="1.5" r=".45"/><circle cx="10.7" cy="1.5" r=".45"/><circle cx="12.2" cy="1.5" r=".45"/><circle cx="9.2" cy="3.1" r=".45"/><circle cx="10.7" cy="3.1" r=".45"/><circle cx="12.2" cy="3.1" r=".45"/><circle cx="10.7" cy="4.7" r=".45"/><circle cx="12.2" cy="4.7" r=".45"/></g></svg>`,
+  en: `<svg viewBox="0 0 60 40" aria-hidden="true"><rect width="60" height="40" fill="#012169"/><path d="M0 0l60 40M60 0L0 40" stroke="#fff" stroke-width="8"/>
+       <path d="M0 0l60 40M60 0L0 40" stroke="#c8102e" stroke-width="3"/><path d="M30 0v40M0 20h60" stroke="#fff" stroke-width="12"/><path d="M30 0v40M0 20h60" stroke="#c8102e" stroke-width="7"/></svg>`,
+  ru: `<svg viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="20" fill="#d52b1e"/><rect width="30" height="13.3" fill="#0039a6"/><rect width="30" height="6.7" fill="#fff"/></svg>`
+};
+const LANG_NAMES = { uz: "O'zbekcha", en: "English", ru: "Русский" };
+function renderLangPicker() {
+  const box = document.getElementById("langPicker");
+  if (!box) return;
+  const cur = getLang();
+  box.innerHTML = `
+    <button type="button" class="lang-btn" aria-haspopup="listbox" aria-expanded="false" aria-label="Language: ${LANG_NAMES[cur]}">
+      <span class="flag">${FLAGS[cur]}</span><span class="lang-code">${cur.toUpperCase()}</span><span class="caret">▾</span></button>
+    <ul class="lang-menu" role="listbox" hidden>
+      ${Object.keys(LANG_NAMES).map(l => `<li role="option" aria-selected="${l === cur}" data-lang="${l}" tabindex="0" class="${l === cur ? "sel" : ""}">
+        <span class="flag">${FLAGS[l]}</span>${LANG_NAMES[l]}</li>`).join("")}
+    </ul>`;
+  const btn = box.querySelector(".lang-btn"), menu = box.querySelector(".lang-menu");
+  const toggle = open => { menu.hidden = !open; btn.setAttribute("aria-expanded", String(open)); if (open) menu.querySelector(".sel")?.focus(); };
+  btn.onclick = e => { e.stopPropagation(); toggle(menu.hidden); };
+  menu.onclick = e => { const li = e.target.closest("[data-lang]"); if (li) { toggle(false); setLang(li.dataset.lang); } };
+  menu.onkeydown = e => {
+    const items = [...menu.querySelectorAll("li")], i = items.indexOf(document.activeElement);
+    if (e.key === "ArrowDown") { e.preventDefault(); items[(i + 1) % items.length].focus(); }
+    else if (e.key === "ArrowUp") { e.preventDefault(); items[(i - 1 + items.length) % items.length].focus(); }
+    else if (e.key === "Enter" || e.key === " ") { e.preventDefault(); document.activeElement.click(); }
+    else if (e.key === "Escape") { toggle(false); btn.focus(); }
+  };
+}
+document.addEventListener("click", e => {
+  const m = document.querySelector("#langPicker .lang-menu");
+  if (m && !m.hidden && !e.target.closest("#langPicker")) { m.hidden = true; document.querySelector("#langPicker .lang-btn").setAttribute("aria-expanded", "false"); }
+});
 
 /* ---------- Formatlash ---------- */
 function money(n) {
@@ -234,9 +272,7 @@ function renderNav(active) {
       <div class="nav-right">
         <span id="accountNav" class="acc"></span>
         <span class="ai-dot ${gemini.enabled() ? "on" : "off"}" title="${esc(t(gemini.enabled() ? "ai.on" : "ai.off"))}">AI</span>
-        <select id="langSelect" aria-label="Language" onchange="setLang(this.value)">
-          <option value="uz">UZ</option><option value="en">EN</option><option value="ru">RU</option>
-        </select>
+        <div id="langPicker" class="lang-picker"></div>
       </div>
     </div>`;
   const footer = document.getElementById("foot");
