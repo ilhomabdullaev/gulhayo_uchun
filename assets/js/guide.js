@@ -149,8 +149,13 @@ async function openPlace(p, autoplay) {
   const txt = document.getElementById("gText");
   txt.innerHTML = `<span class="spinner"></span> ${t("guide.gen")}`;
   txt.dir = ["ar", "fa"].includes(lang) ? "rtl" : "ltr";
+  const rec = typeof audioFor === "function" ? audioFor(p.id, lang) : null;
+  const player = document.getElementById("gAudio");
+  player.classList.toggle("hidden", !rec);
+  if (rec) player.src = rec; else player.removeAttribute("src");
   try {
-    const n = await narration(p, lang);
+    // Ovozli yozuv bo'lsa — yozib olingan matnning o'zi ko'rsatiladi (AI matni emas)
+    const n = rec && NARR[p.id] ? { text: NARR[p.id][lang] || NARR[p.id].en, src: "🎙️ " + t("guide.recorded") } : await narration(p, lang);
     if (current !== p) return;
     txt.textContent = n.text;
     document.getElementById("gSrc").textContent = n.src;
@@ -194,10 +199,17 @@ function showNoVoice(lang) {
 function stopSpeech() {
   try { speechSynthesis.cancel(); } catch (e) { /* ignore */ }
   if (audioEl) { audioEl.pause(); audioEl = null; }
+  const pl = document.getElementById("gAudio"); if (pl && !pl.paused) pl.pause();
 }
 async function speak(text, lang) {
   stopSpeech();
   document.getElementById("gVoiceHelp").classList.add("hidden");
+  // 1) Oldindan yozilgan audio — har qanday telefonda ishlaydi
+  const player = document.getElementById("gAudio");
+  if (current && player.getAttribute("src")) {
+    try { await player.play(); } catch (e) { /* avtomatik ijro bloklansa, foydalanuvchi ▶ ni bosadi */ }
+    return;
+  }
   const voice = await findVoice(lang);
   if ((aiVoice.checked || !voice) && gemini.ttsKey()) { // Gemini ovozi — admin kalit kiritgan bo'lsa
     try { await speakGemini(text); return; } catch (e) { console.warn("Gemini TTS:", e.message); }

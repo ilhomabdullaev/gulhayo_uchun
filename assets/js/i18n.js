@@ -1,6 +1,7 @@
 /* Interfeys tarjimalari: uz / en / ru */
 const I18N = {
   uz: {
+    "guide.recorded": "Ovozli yozuv",
     "hero.skyCap": "Registon ansambli, Samarqand",
     "set.aiTitle": "Sun'iy intellekt", "set.aiAdmin": "AI tizim administratori tomonidan sozlanadi — sizga hech qanday kalit kiritish shart emas.",
     "set.aiMode": "AI Firebase orqali ishlaydi: foydalanuvchilar kalit kiritishi shart emas. Bu yerdagi shaxsiy kalit ixtiyoriy (kiritilsa, u ishlatiladi va Gemini ovozi ham yoqiladi).",
@@ -78,6 +79,7 @@ const I18N = {
   },
 
   en: {
+    "guide.recorded": "Voice recording",
     "hero.skyCap": "Registan Square, Samarkand",
     "set.aiTitle": "Artificial intelligence", "set.aiAdmin": "AI is configured by the site administrator — you do not need to enter any key.",
     "set.aiMode": "AI runs through Firebase: users do not need a key. A personal key here is optional (if set, it is used and also enables Gemini voice).",
@@ -155,6 +157,7 @@ const I18N = {
   },
 
   ru: {
+    "guide.recorded": "Аудиозапись",
     "hero.skyCap": "Площадь Регистан, Самарканд",
     "set.aiTitle": "Искусственный интеллект", "set.aiAdmin": "ИИ настраивается администратором сайта — вводить ключ не нужно.",
     "set.aiMode": "AI работает через Firebase: пользователям ключ не нужен. Личный ключ здесь необязателен (если указан, используется он и включается голос Gemini).",

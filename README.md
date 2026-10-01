@@ -40,6 +40,17 @@ Firebase ham, kalit ham bo'lmasa, sayt ichki (oflayn) algoritm bilan ishlayverad
 
 > Keyinchalik (real foydalanuvchilar ko'payganda) Firebase **App Check** ni yoqish tavsiya etiladi. U AI'dan faqat sizning saytingiz foydalanishini kafolatlaydi.
 
+## Audio-gid: telefonlarda o'zbekcha ovoz
+
+Brauzerlarda o'zbek tili uchun ovoz yo'q: iPhone'da ham, ko'pchilik Android telefonlarda ham, Chrome'da ham. Kompyuterda faqat Microsoft Edge'da bor.
+Shuning uchun gid **oldindan yozilgan audio fayllarni** birinchi navbatda o'ynatadi. Ular istalgan telefon va brauzerda ishlaydi.
+
+1. O'qish matnlari: `docs/05_Audio_gid_matnlari.docx`. Unda 34 obida va har birining fayl nomi bor.
+2. Yozilgan fayllarni (`registan.mp3`, `guramir.m4a` ...) `assets/audio/uz/` papkasiga yuklang.
+3. `assets/audio/manifest.js` fayliga ro'yxatni yozing, masalan `uz: { registan: "registan.mp3" }`.
+
+Gid ovozni quyidagi tartibda tanlaydi: **audio yozuv → brauzer ovozi → Gemini ovozi (admin kalit kiritgan bo'lsa) → faqat matn.**
+
 ## 3. Ro'yxatdan o'tish va admin panel (Firebase)
 
 Firebase ulanmagan bo'lsa ham sayt demo rejimida ishlaydi: ma'lumotlar faqat brauzerda saqlanadi.
